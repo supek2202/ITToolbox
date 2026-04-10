@@ -1,0 +1,42 @@
+name: Build Windows EXE
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+    
+    - name: Install dependencies
+      run: |
+        pip install -r requirements.txt
+        pip install pyinstaller
+    
+    - name: Build EXE
+      run: |
+        pyinstaller --onefile --windowed --name NetInspector --add-data "commands.json;." net_inspector.py
+      shell: cmd
+    
+    - name: Create Release
+      uses: softprops/action-gh-release@v1
+      if: github.ref == 'refs/heads/main'
+      with:
+        files: |
+          dist/NetInspector.exe
+          commands.json
+        tag_name: v1.0
+        name: NetInspector v1.0
+        body: 网络设备巡检工具 Windows 可执行文件
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
