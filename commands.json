@@ -1,0 +1,442 @@
+{
+    "commands": [
+        {
+            "vendor": "Cisco",
+            "device_type": "路由器",
+            "category": "基本信息",
+            "description": "查看设备版本信息",
+            "command": "show version"
+        },
+        {
+            "vendor": "Cisco",
+            "device_type": "路由器",
+            "category": "接口信息",
+            "description": "查看所有接口状态",
+            "command": "show ip interface brief"
+        },
+        {
+            "vendor": "Cisco",
+            "device_type": "路由器",
+            "category": "路由信息",
+            "description": "查看路由表",
+            "command": "show ip route"
+        },
+        {
+            "vendor": "Cisco",
+            "device_type": "路由器",
+            "category": "系统状态",
+            "description": "查看CPU使用率",
+            "command": "show cpu"
+        },
+        {
+            "vendor": "Cisco",
+            "device_type": "路由器",
+            "category": "系统状态",
+            "description": "查看内存使用",
+            "command": "show memory"
+        },
+        {
+            "vendor": "Cisco",
+            "device_type": "路由器",
+            "category": "系统状态",
+            "description": "查看进程",
+            "command": "show processes cpu"
+        },
+        {
+            "vendor": "Cisco",
+            "device_type": "路由器",
+            "category": "日志信息",
+            "description": "查看日志缓冲区",
+            "command": "show log"
+        },
+        {
+            "vendor": "Cisco",
+            "device_type": "路由器",
+            "category": "VLAN信息",
+            "description": "查看VLAN",
+            "command": "show vlan"
+        },
+        {
+            "vendor": "Cisco",
+            "device_type": "路由器",
+            "category": "ARP信息",
+            "description": "查看ARP表",
+            "command": "show arp"
+        },
+        {
+            "vendor": "Cisco",
+            "device_type": "路由器",
+            "category": "CDP信息",
+            "description": "查看邻居设备",
+            "command": "show cdp neighbors detail"
+        },
+        {
+            "vendor": "Cisco",
+            "device_type": "交换机",
+            "category": "基本信息",
+            "description": "查看设备版本信息",
+            "command": "show version"
+        },
+        {
+            "vendor": "Cisco",
+            "device_type": "交换机",
+            "category": "接口信息",
+            "description": "查看所有接口状态",
+            "command": "show interface status"
+        },
+        {
+            "vendor": "Cisco",
+            "device_type": "交换机",
+            "category": "接口信息",
+            "description": "查看VLAN接口",
+            "command": "show ip interface brief"
+        },
+        {
+            "vendor": "Cisco",
+            "device_type": "交换机",
+            "category": "VLAN信息",
+            "description": "查看VLAN",
+            "command": "show vlan"
+        },
+        {
+            "vendor": "Cisco",
+            "device_type": "交换机",
+            "category": "生成树",
+            "description": "查看生成树状态",
+            "command": "show spanning-tree"
+        },
+        {
+            "vendor": "Cisco",
+            "device_type": "交换机",
+            "category": "系统状态",
+            "description": "查看MAC地址表",
+            "command": "show mac address-table"
+        },
+        {
+            "vendor": "Huawei",
+            "device_type": "路由器",
+            "category": "基本信息",
+            "description": "查看设备版本信息",
+            "command": "display version"
+        },
+        {
+            "vendor": "Huawei",
+            "device_type": "路由器",
+            "category": "接口信息",
+            "description": "查看所有接口状态",
+            "command": "display ip interface brief"
+        },
+        {
+            "vendor": "Huawei",
+            "device_type": "路由器",
+            "category": "路由信息",
+            "description": "查看路由表",
+            "command": "display ip routing-table"
+        },
+        {
+            "vendor": "Huawei",
+            "device_type": "路由器",
+            "category": "系统状态",
+            "description": "查看CPU使用率",
+            "command": "display cpu"
+        },
+        {
+            "vendor": "Huawei",
+            "device_type": "路由器",
+            "category": "系统状态",
+            "description": "查看内存使用",
+            "command": "display memory"
+        },
+        {
+            "vendor": "Huawei",
+            "device_type": "路由器",
+            "category": "ARP信息",
+            "description": "查看ARP表",
+            "command": "display arp"
+        },
+        {
+            "vendor": "Huawei",
+            "device_type": "路由器",
+            "category": "LLDP信息",
+            "description": "查看邻居设备",
+            "command": "display lldp neighbor"
+        },
+        {
+            "vendor": "Huawei",
+            "device_type": "交换机",
+            "category": "基本信息",
+            "description": "查看设备版本信息",
+            "command": "display version"
+        },
+        {
+            "vendor": "Huawei",
+            "device_type": "交换机",
+            "category": "接口信息",
+            "description": "查看所有接口状态",
+            "command": "display interface brief"
+        },
+        {
+            "vendor": "Huawei",
+            "device_type": "交换机",
+            "category": "VLAN信息",
+            "description": "查看VLAN",
+            "command": "display vlan"
+        },
+        {
+            "vendor": "Huawei",
+            "device_type": "交换机",
+            "category": "生成树",
+            "description": "查看生成树状态",
+            "command": "display stp brief"
+        },
+        {
+            "vendor": "Huawei",
+            "device_type": "交换机",
+            "category": "MAC信息",
+            "description": "查看MAC地址表",
+            "command": "display mac-address"
+        },
+        {
+            "vendor": "H3C",
+            "device_type": "路由器",
+            "category": "基本信息",
+            "description": "查看设备版本信息",
+            "command": "display version"
+        },
+        {
+            "vendor": "H3C",
+            "device_type": "路由器",
+            "category": "接口信息",
+            "description": "查看所有接口状态",
+            "command": "display ip interface brief"
+        },
+        {
+            "vendor": "H3C",
+            "device_type": "路由器",
+            "category": "路由信息",
+            "description": "查看路由表",
+            "command": "display ip routing-table"
+        },
+        {
+            "vendor": "H3C",
+            "device_type": "路由器",
+            "category": "系统状态",
+            "description": "查看CPU使用率",
+            "command": "display cpu"
+        },
+        {
+            "vendor": "H3C",
+            "device_type": "路由器",
+            "category": "系统状态",
+            "description": "查看内存使用",
+            "command": "display memory"
+        },
+        {
+            "vendor": "H3C",
+            "device_type": "交换机",
+            "category": "基本信息",
+            "description": "查看设备版本信息",
+            "command": "display version"
+        },
+        {
+            "vendor": "H3C",
+            "device_type": "交换机",
+            "category": "接口信息",
+            "description": "查看所有接口状态",
+            "command": "display interface brief"
+        },
+        {
+            "vendor": "H3C",
+            "device_type": "交换机",
+            "category": "VLAN信息",
+            "description": "查看VLAN",
+            "command": "display vlan"
+        },
+        {
+            "vendor": "Juniper",
+            "device_type": "路由器",
+            "category": "基本信息",
+            "description": "查看设备版本信息",
+            "command": "show version"
+        },
+        {
+            "vendor": "Juniper",
+            "device_type": "路由器",
+            "category": "接口信息",
+            "description": "查看所有接口状态",
+            "command": "show interface terse"
+        },
+        {
+            "vendor": "Juniper",
+            "device_type": "路由器",
+            "category": "路由信息",
+            "description": "查看路由表",
+            "command": "show route"
+        },
+        {
+            "vendor": "Juniper",
+            "device_type": "路由器",
+            "category": "系统状态",
+            "description": "查看系统信息",
+            "command": "show system information"
+        },
+        {
+            "vendor": "Fortinet",
+            "device_type": "防火墙",
+            "category": "基本信息",
+            "description": "查看设备版本信息",
+            "command": "get system status"
+        },
+        {
+            "vendor": "Fortinet",
+            "device_type": "防火墙",
+            "category": "系统状态",
+            "description": "查看CPU使用率",
+            "command": "get system performance status"
+        },
+        {
+            "vendor": "Fortinet",
+            "device_type": "防火墙",
+            "category": "接口信息",
+            "description": "查看所有接口",
+            "command": "get system interface"
+        },
+        {
+            "vendor": "Fortinet",
+            "device_type": "防火墙",
+            "category": "会话信息",
+            "description": "查看会话表",
+            "command": "get system session list | head -50"
+        },
+        {
+            "vendor": "Fortinet",
+            "device_type": "防火墙",
+            "category": "路由信息",
+            "description": "查看路由表",
+            "command": "get router info routing-table"
+        },
+        {
+            "vendor": "Fortinet",
+            "device_type": "防火墙",
+            "category": "日志信息",
+            "description": "查看日志",
+            "command": "execute log filter category 2 && execute log display | head -30"
+        },
+        {
+            "vendor": "锐捷",
+            "device_type": "路由器",
+            "category": "基本信息",
+            "description": "查看设备版本信息",
+            "command": "show version"
+        },
+        {
+            "vendor": "锐捷",
+            "device_type": "路由器",
+            "category": "接口信息",
+            "description": "查看所有接口状态",
+            "command": "show ip interface brief"
+        },
+        {
+            "vendor": "锐捷",
+            "device_type": "路由器",
+            "category": "路由信息",
+            "description": "查看路由表",
+            "command": "show ip route"
+        },
+        {
+            "vendor": "锐捷",
+            "device_type": "交换机",
+            "category": "基本信息",
+            "description": "查看设备版本信息",
+            "command": "show version"
+        },
+        {
+            "vendor": "锐捷",
+            "device_type": "交换机",
+            "category": "接口信息",
+            "description": "查看所有接口状态",
+            "command": "show interface status"
+        },
+        {
+            "vendor": "锐捷",
+            "device_type": "交换机",
+            "category": "VLAN信息",
+            "description": "查看VLAN",
+            "command": "show vlan"
+        },
+        {
+            "vendor": "深信服",
+            "device_type": "防火墙",
+            "category": "基本信息",
+            "description": "查看设备版本信息",
+            "command": "dis version"
+        },
+        {
+            "vendor": "深信服",
+            "device_type": "防火墙",
+            "category": "系统状态",
+            "description": "查看CPU使用率",
+            "command": "dis cpu"
+        },
+        {
+            "vendor": "深信服",
+            "device_type": "防火墙",
+            "category": "系统状态",
+            "description": "查看内存使用",
+            "command": "dis memory"
+        },
+        {
+            "vendor": "深信服",
+            "device_type": "防火墙",
+            "category": "接口信息",
+            "description": "查看所有接口",
+            "command": "dis interface brief"
+        },
+        {
+            "vendor": "深信服",
+            "device_type": "防火墙",
+            "category": "会话信息",
+            "description": "查看会话数",
+            "command": "dis session statistics"
+        },
+        {
+            "vendor": "其他",
+            "device_type": "路由器",
+            "category": "基本信息",
+            "description": "查看设备版本信息",
+            "command": "show version"
+        },
+        {
+            "vendor": "其他",
+            "device_type": "交换机",
+            "category": "基本信息",
+            "description": "查看设备版本信息",
+            "command": "show version"
+        },
+        {
+            "vendor": "其他",
+            "device_type": "防火墙",
+            "category": "基本信息",
+            "description": "查看设备版本信息",
+            "command": "show version"
+        }
+    ],
+    "vendors": [
+        "Cisco",
+        "Huawei",
+        "H3C",
+        "Juniper",
+        "Fortinet",
+        "锐捷",
+        "深信服",
+        "其他"
+    ],
+    "device_types": [
+        "路由器",
+        "交换机",
+        "防火墙",
+        "无线控制器",
+        "负载均衡器",
+        "其他"
+    ]
+}
