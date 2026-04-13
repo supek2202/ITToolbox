@@ -2,422 +2,1416 @@
     "commands": [
         {
             "vendor": "Cisco",
+            "device_type": "防火墙",
+            "category": "基本信息",
+            "description": "版本信息",
+            "command": "show version"
+        },
+        {
+            "vendor": "Cisco",
+            "device_type": "防火墙",
+            "category": "接口信息",
+            "description": "接口状态",
+            "command": "show interface"
+        },
+        {
+            "vendor": "Cisco",
+            "device_type": "防火墙",
+            "category": "接口信息",
+            "description": "接口IP摘要",
+            "command": "show interface ip brief"
+        },
+        {
+            "vendor": "Cisco",
+            "device_type": "防火墙",
+            "category": "高可用",
+            "description": "主备 Failover 状态",
+            "command": "show failover"
+        },
+        {
+            "vendor": "Cisco",
+            "device_type": "防火墙",
+            "category": "VPN",
+            "description": "VPN IPSec 状态",
+            "command": "show crypto ipsec sa"
+        },
+        {
+            "vendor": "Cisco",
+            "device_type": "防火墙",
+            "category": "会话信息",
+            "description": "会话数统计",
+            "command": "show conn count"
+        },
+        {
+            "vendor": "Cisco",
+            "device_type": "防火墙",
+            "category": "系统状态",
+            "description": "CPU 使用率",
+            "command": "show cpu"
+        },
+        {
+            "vendor": "Cisco",
+            "device_type": "防火墙",
+            "category": "系统状态",
+            "description": "内存使用率",
+            "command": "show memory"
+        },
+        {
+            "vendor": "Cisco",
             "device_type": "路由器",
             "category": "基本信息",
-            "description": "查看设备版本信息",
+            "description": "版本信息",
             "command": "show version"
         },
         {
             "vendor": "Cisco",
             "device_type": "路由器",
+            "category": "系统状态",
+            "description": "系统时间",
+            "command": "show clock"
+        },
+        {
+            "vendor": "Cisco",
+            "device_type": "路由器",
+            "category": "系统状态",
+            "description": "CPU 使用率",
+            "command": "show processes cpu sorted"
+        },
+        {
+            "vendor": "Cisco",
+            "device_type": "路由器",
+            "category": "系统状态",
+            "description": "内存使用",
+            "command": "show processes memory sorted"
+        },
+        {
+            "vendor": "Cisco",
+            "device_type": "路由器",
+            "category": "系统状态",
+            "description": "系统日志",
+            "command": "show log"
+        },
+        {
+            "vendor": "Cisco",
+            "device_type": "路由器",
             "category": "接口信息",
-            "description": "查看所有接口状态",
+            "description": "接口状态摘要",
             "command": "show ip interface brief"
         },
         {
             "vendor": "Cisco",
             "device_type": "路由器",
             "category": "路由信息",
-            "description": "查看路由表",
+            "description": "路由表",
             "command": "show ip route"
         },
         {
             "vendor": "Cisco",
             "device_type": "路由器",
-            "category": "系统状态",
-            "description": "查看CPU使用率",
-            "command": "show cpu"
+            "category": "路由信息",
+            "description": "路由表摘要",
+            "command": "show ip route summary"
         },
         {
             "vendor": "Cisco",
             "device_type": "路由器",
-            "category": "系统状态",
-            "description": "查看内存使用",
-            "command": "show memory"
+            "category": "邻居信息",
+            "description": "CDP 邻居详情",
+            "command": "show cdp neighbors detail"
         },
         {
             "vendor": "Cisco",
             "device_type": "路由器",
-            "category": "系统状态",
-            "description": "查看进程",
-            "command": "show processes cpu"
+            "category": "邻居信息",
+            "description": "OSPF 邻居状态",
+            "command": "show ip ospf neighbor"
         },
         {
             "vendor": "Cisco",
             "device_type": "路由器",
-            "category": "日志信息",
-            "description": "查看日志缓冲区",
-            "command": "show log"
-        },
-        {
-            "vendor": "Cisco",
-            "device_type": "路由器",
-            "category": "VLAN信息",
-            "description": "查看VLAN",
-            "command": "show vlan"
+            "category": "邻居信息",
+            "description": "BGP 邻居状态",
+            "command": "show ip bgp summary"
         },
         {
             "vendor": "Cisco",
             "device_type": "路由器",
             "category": "ARP信息",
-            "description": "查看ARP表",
+            "description": "ARP 表",
             "command": "show arp"
         },
         {
             "vendor": "Cisco",
             "device_type": "路由器",
-            "category": "CDP信息",
-            "description": "查看邻居设备",
-            "command": "show cdp neighbors detail"
+            "category": "高可用",
+            "description": "VRRP 状态",
+            "command": "show standby brief"
         },
         {
             "vendor": "Cisco",
             "device_type": "交换机",
             "category": "基本信息",
-            "description": "查看设备版本信息",
+            "description": "版本信息",
             "command": "show version"
         },
         {
             "vendor": "Cisco",
             "device_type": "交换机",
+            "category": "系统状态",
+            "description": "系统时间",
+            "command": "show clock"
+        },
+        {
+            "vendor": "Cisco",
+            "device_type": "交换机",
+            "category": "系统状态",
+            "description": "CPU 使用率",
+            "command": "show processes cpu sorted"
+        },
+        {
+            "vendor": "Cisco",
+            "device_type": "交换机",
+            "category": "系统状态",
+            "description": "内存使用",
+            "command": "show processes memory sorted"
+        },
+        {
+            "vendor": "Cisco",
+            "device_type": "交换机",
+            "category": "系统状态",
+            "description": "系统日志",
+            "command": "show log"
+        },
+        {
+            "vendor": "Cisco",
+            "device_type": "交换机",
             "category": "接口信息",
-            "description": "查看所有接口状态",
+            "description": "接口状态",
             "command": "show interface status"
         },
         {
             "vendor": "Cisco",
             "device_type": "交换机",
             "category": "接口信息",
-            "description": "查看VLAN接口",
+            "description": "接口IP摘要",
             "command": "show ip interface brief"
         },
         {
             "vendor": "Cisco",
             "device_type": "交换机",
             "category": "VLAN信息",
-            "description": "查看VLAN",
-            "command": "show vlan"
+            "description": "VLAN 列表",
+            "command": "show vlan brief"
         },
         {
             "vendor": "Cisco",
             "device_type": "交换机",
             "category": "生成树",
-            "description": "查看生成树状态",
+            "description": "生成树状态",
             "command": "show spanning-tree"
         },
         {
             "vendor": "Cisco",
             "device_type": "交换机",
-            "category": "系统状态",
-            "description": "查看MAC地址表",
+            "category": "MAC信息",
+            "description": "MAC 地址表",
             "command": "show mac address-table"
+        },
+        {
+            "vendor": "Cisco",
+            "device_type": "交换机",
+            "category": "ARP信息",
+            "description": "ARP 表",
+            "command": "show arp"
+        },
+        {
+            "vendor": "Cisco",
+            "device_type": "交换机",
+            "category": "路由信息",
+            "description": "路由表",
+            "command": "show ip route"
+        },
+        {
+            "vendor": "Cisco",
+            "device_type": "交换机",
+            "category": "邻居信息",
+            "description": "CDP 邻居详情",
+            "command": "show cdp neighbors detail"
+        },
+        {
+            "vendor": "Cisco",
+            "device_type": "交换机",
+            "category": "邻居信息",
+            "description": "LLDP 邻居",
+            "command": "show lldp neighbors detail"
+        },
+        {
+            "vendor": "Cisco",
+            "device_type": "交换机",
+            "category": "高可用",
+            "description": "VRRP/HSRP 状态",
+            "command": "show standby brief"
+        },
+        {
+            "vendor": "Cisco",
+            "device_type": "交换机",
+            "category": "堆叠",
+            "description": "堆叠成员状态",
+            "command": "show switch"
+        },
+        {
+            "vendor": "Cisco",
+            "device_type": "交换机",
+            "category": "堆叠",
+            "description": "堆叠链路状态",
+            "command": "show switch stack-ports"
+        },
+        {
+            "vendor": "Cisco",
+            "device_type": "交换机",
+            "category": "链路聚合",
+            "description": "端口聚合状态",
+            "command": "show etherchannel summary"
+        },
+        {
+            "vendor": "Huawei",
+            "device_type": "防火墙",
+            "category": "基本信息",
+            "description": "版本信息",
+            "command": "display version"
+        },
+        {
+            "vendor": "Huawei",
+            "device_type": "防火墙",
+            "category": "接口信息",
+            "description": "接口IP摘要",
+            "command": "display ip interface brief"
+        },
+        {
+            "vendor": "Huawei",
+            "device_type": "防火墙",
+            "category": "会话信息",
+            "description": "会话表",
+            "command": "display firewall session table"
+        },
+        {
+            "vendor": "Huawei",
+            "device_type": "防火墙",
+            "category": "系统状态",
+            "description": "CPU 使用率",
+            "command": "display cpu-usage"
+        },
+        {
+            "vendor": "Huawei",
+            "device_type": "防火墙",
+            "category": "系统状态",
+            "description": "内存使用率",
+            "command": "display memory-usage"
+        },
+        {
+            "vendor": "Huawei",
+            "device_type": "防火墙",
+            "category": "系统状态",
+            "description": "日志缓存",
+            "command": "display logbuffer"
+        },
+        {
+            "vendor": "Huawei",
+            "device_type": "防火墙",
+            "category": "ARP信息",
+            "description": "ARP 表",
+            "command": "display arp"
         },
         {
             "vendor": "Huawei",
             "device_type": "路由器",
             "category": "基本信息",
-            "description": "查看设备版本信息",
+            "description": "版本信息",
             "command": "display version"
         },
         {
             "vendor": "Huawei",
             "device_type": "路由器",
+            "category": "系统状态",
+            "description": "系统时间",
+            "command": "display clock"
+        },
+        {
+            "vendor": "Huawei",
+            "device_type": "路由器",
+            "category": "系统状态",
+            "description": "CPU 使用率",
+            "command": "display cpu-usage"
+        },
+        {
+            "vendor": "Huawei",
+            "device_type": "路由器",
+            "category": "系统状态",
+            "description": "内存使用率",
+            "command": "display memory-usage"
+        },
+        {
+            "vendor": "Huawei",
+            "device_type": "路由器",
+            "category": "系统状态",
+            "description": "系统日志",
+            "command": "display logbuffer"
+        },
+        {
+            "vendor": "Huawei",
+            "device_type": "路由器",
             "category": "接口信息",
-            "description": "查看所有接口状态",
+            "description": "接口状态摘要",
             "command": "display ip interface brief"
         },
         {
             "vendor": "Huawei",
             "device_type": "路由器",
             "category": "路由信息",
-            "description": "查看路由表",
+            "description": "路由表",
             "command": "display ip routing-table"
         },
         {
             "vendor": "Huawei",
             "device_type": "路由器",
-            "category": "系统状态",
-            "description": "查看CPU使用率",
-            "command": "display cpu"
+            "category": "路由信息",
+            "description": "路由表统计",
+            "command": "display ip routing-table statistics"
         },
         {
             "vendor": "Huawei",
             "device_type": "路由器",
-            "category": "系统状态",
-            "description": "查看内存使用",
-            "command": "display memory"
+            "category": "邻居信息",
+            "description": "LLDP 邻居",
+            "command": "display lldp neighbor brief"
+        },
+        {
+            "vendor": "Huawei",
+            "device_type": "路由器",
+            "category": "邻居信息",
+            "description": "OSPF 邻居状态",
+            "command": "display ospf peer brief"
+        },
+        {
+            "vendor": "Huawei",
+            "device_type": "路由器",
+            "category": "邻居信息",
+            "description": "BGP 邻居状态",
+            "command": "display bgp peer"
         },
         {
             "vendor": "Huawei",
             "device_type": "路由器",
             "category": "ARP信息",
-            "description": "查看ARP表",
+            "description": "ARP 表",
             "command": "display arp"
         },
         {
             "vendor": "Huawei",
             "device_type": "路由器",
-            "category": "LLDP信息",
-            "description": "查看邻居设备",
-            "command": "display lldp neighbor"
+            "category": "高可用",
+            "description": "VRRP 状态",
+            "command": "display vrrp brief"
         },
         {
             "vendor": "Huawei",
             "device_type": "交换机",
             "category": "基本信息",
-            "description": "查看设备版本信息",
+            "description": "版本信息",
             "command": "display version"
         },
         {
             "vendor": "Huawei",
             "device_type": "交换机",
+            "category": "系统状态",
+            "description": "系统时间",
+            "command": "display clock"
+        },
+        {
+            "vendor": "Huawei",
+            "device_type": "交换机",
+            "category": "系统状态",
+            "description": "CPU 使用率",
+            "command": "display cpu-usage"
+        },
+        {
+            "vendor": "Huawei",
+            "device_type": "交换机",
+            "category": "系统状态",
+            "description": "内存使用率",
+            "command": "display memory-usage"
+        },
+        {
+            "vendor": "Huawei",
+            "device_type": "交换机",
+            "category": "系统状态",
+            "description": "系统日志",
+            "command": "display logbuffer"
+        },
+        {
+            "vendor": "Huawei",
+            "device_type": "交换机",
             "category": "接口信息",
-            "description": "查看所有接口状态",
+            "description": "接口状态摘要",
             "command": "display interface brief"
         },
         {
             "vendor": "Huawei",
             "device_type": "交换机",
             "category": "VLAN信息",
-            "description": "查看VLAN",
+            "description": "VLAN 列表",
             "command": "display vlan"
         },
         {
             "vendor": "Huawei",
             "device_type": "交换机",
             "category": "生成树",
-            "description": "查看生成树状态",
+            "description": "生成树状态",
             "command": "display stp brief"
         },
         {
             "vendor": "Huawei",
             "device_type": "交换机",
             "category": "MAC信息",
-            "description": "查看MAC地址表",
+            "description": "MAC 地址表",
             "command": "display mac-address"
+        },
+        {
+            "vendor": "Huawei",
+            "device_type": "交换机",
+            "category": "ARP信息",
+            "description": "ARP 表",
+            "command": "display arp"
+        },
+        {
+            "vendor": "Huawei",
+            "device_type": "交换机",
+            "category": "路由信息",
+            "description": "路由表",
+            "command": "display ip routing-table"
+        },
+        {
+            "vendor": "Huawei",
+            "device_type": "交换机",
+            "category": "邻居信息",
+            "description": "LLDP 邻居",
+            "command": "display lldp neighbor brief"
+        },
+        {
+            "vendor": "Huawei",
+            "device_type": "交换机",
+            "category": "邻居信息",
+            "description": "OSPF 邻居状态",
+            "command": "display ospf peer brief"
+        },
+        {
+            "vendor": "Huawei",
+            "device_type": "交换机",
+            "category": "高可用",
+            "description": "VRRP 状态",
+            "command": "display vrrp brief"
+        },
+        {
+            "vendor": "Huawei",
+            "device_type": "交换机",
+            "category": "堆叠/IRF",
+            "description": "IRF 成员状态",
+            "command": "display irf"
+        },
+        {
+            "vendor": "Huawei",
+            "device_type": "交换机",
+            "category": "堆叠/IRF",
+            "description": "IRF 链路状态",
+            "command": "display irf link"
+        },
+        {
+            "vendor": "Huawei",
+            "device_type": "交换机",
+            "category": "堆叠/IRF",
+            "description": "CSS 堆叠状态",
+            "command": "display css status"
+        },
+        {
+            "vendor": "Huawei",
+            "device_type": "交换机",
+            "category": "M-LAG",
+            "description": "M-LAG 状态",
+            "command": "display m-lag brief"
+        },
+        {
+            "vendor": "Huawei",
+            "device_type": "交换机",
+            "category": "M-LAG",
+            "description": "M-LAG 成员接口",
+            "command": "display m-lag interface"
+        },
+        {
+            "vendor": "Huawei",
+            "device_type": "交换机",
+            "category": "链路聚合",
+            "description": "聚合组状态",
+            "command": "display eth-trunk"
+        },
+        {
+            "vendor": "H3C",
+            "device_type": "防火墙",
+            "category": "基本信息",
+            "description": "版本信息",
+            "command": "display version"
+        },
+        {
+            "vendor": "H3C",
+            "device_type": "防火墙",
+            "category": "接口信息",
+            "description": "接口状态",
+            "command": "display interface"
+        },
+        {
+            "vendor": "H3C",
+            "device_type": "防火墙",
+            "category": "系统状态",
+            "description": "CPU 使用率",
+            "command": "display cpu"
+        },
+        {
+            "vendor": "H3C",
+            "device_type": "防火墙",
+            "category": "系统状态",
+            "description": "内存使用率",
+            "command": "display memory"
+        },
+        {
+            "vendor": "H3C",
+            "device_type": "防火墙",
+            "category": "会话信息",
+            "description": "会话表",
+            "command": "display session table"
+        },
+        {
+            "vendor": "H3C",
+            "device_type": "防火墙",
+            "category": "系统状态",
+            "description": "日志",
+            "command": "display logbuffer"
         },
         {
             "vendor": "H3C",
             "device_type": "路由器",
             "category": "基本信息",
-            "description": "查看设备版本信息",
+            "description": "版本信息",
             "command": "display version"
         },
         {
             "vendor": "H3C",
             "device_type": "路由器",
-            "category": "接口信息",
-            "description": "查看所有接口状态",
-            "command": "display ip interface brief"
-        },
-        {
-            "vendor": "H3C",
-            "device_type": "路由器",
-            "category": "路由信息",
-            "description": "查看路由表",
-            "command": "display ip routing-table"
+            "category": "系统状态",
+            "description": "系统时间",
+            "command": "display clock"
         },
         {
             "vendor": "H3C",
             "device_type": "路由器",
             "category": "系统状态",
-            "description": "查看CPU使用率",
+            "description": "CPU 使用率",
             "command": "display cpu"
         },
         {
             "vendor": "H3C",
             "device_type": "路由器",
             "category": "系统状态",
-            "description": "查看内存使用",
+            "description": "内存使用率",
             "command": "display memory"
+        },
+        {
+            "vendor": "H3C",
+            "device_type": "路由器",
+            "category": "系统状态",
+            "description": "系统日志",
+            "command": "display logbuffer"
+        },
+        {
+            "vendor": "H3C",
+            "device_type": "路由器",
+            "category": "接口信息",
+            "description": "接口状态摘要",
+            "command": "display ip interface brief"
+        },
+        {
+            "vendor": "H3C",
+            "device_type": "路由器",
+            "category": "路由信息",
+            "description": "路由表",
+            "command": "display ip routing-table"
+        },
+        {
+            "vendor": "H3C",
+            "device_type": "路由器",
+            "category": "路由信息",
+            "description": "路由表统计",
+            "command": "display ip routing-table statistics"
+        },
+        {
+            "vendor": "H3C",
+            "device_type": "路由器",
+            "category": "邻居信息",
+            "description": "LLDP 邻居",
+            "command": "display lldp neighbor-information brief"
+        },
+        {
+            "vendor": "H3C",
+            "device_type": "路由器",
+            "category": "邻居信息",
+            "description": "OSPF 邻居状态",
+            "command": "display ospf peer brief"
+        },
+        {
+            "vendor": "H3C",
+            "device_type": "路由器",
+            "category": "邻居信息",
+            "description": "BGP 邻居状态",
+            "command": "display bgp peer"
+        },
+        {
+            "vendor": "H3C",
+            "device_type": "路由器",
+            "category": "ARP信息",
+            "description": "ARP 表",
+            "command": "display arp"
+        },
+        {
+            "vendor": "H3C",
+            "device_type": "路由器",
+            "category": "高可用",
+            "description": "VRRP 状态",
+            "command": "display vrrp brief"
         },
         {
             "vendor": "H3C",
             "device_type": "交换机",
             "category": "基本信息",
-            "description": "查看设备版本信息",
+            "description": "版本信息",
             "command": "display version"
         },
         {
             "vendor": "H3C",
             "device_type": "交换机",
+            "category": "系统状态",
+            "description": "系统时间",
+            "command": "display clock"
+        },
+        {
+            "vendor": "H3C",
+            "device_type": "交换机",
+            "category": "系统状态",
+            "description": "CPU 使用率",
+            "command": "display cpu"
+        },
+        {
+            "vendor": "H3C",
+            "device_type": "交换机",
+            "category": "系统状态",
+            "description": "内存使用率",
+            "command": "display memory"
+        },
+        {
+            "vendor": "H3C",
+            "device_type": "交换机",
+            "category": "系统状态",
+            "description": "系统日志",
+            "command": "display logbuffer"
+        },
+        {
+            "vendor": "H3C",
+            "device_type": "交换机",
             "category": "接口信息",
-            "description": "查看所有接口状态",
+            "description": "接口状态摘要",
             "command": "display interface brief"
         },
         {
             "vendor": "H3C",
             "device_type": "交换机",
             "category": "VLAN信息",
-            "description": "查看VLAN",
+            "description": "VLAN 列表",
             "command": "display vlan"
+        },
+        {
+            "vendor": "H3C",
+            "device_type": "交换机",
+            "category": "生成树",
+            "description": "生成树状态",
+            "command": "display stp brief"
+        },
+        {
+            "vendor": "H3C",
+            "device_type": "交换机",
+            "category": "MAC信息",
+            "description": "MAC 地址表",
+            "command": "display mac-address"
+        },
+        {
+            "vendor": "H3C",
+            "device_type": "交换机",
+            "category": "ARP信息",
+            "description": "ARP 表",
+            "command": "display arp"
+        },
+        {
+            "vendor": "H3C",
+            "device_type": "交换机",
+            "category": "路由信息",
+            "description": "路由表",
+            "command": "display ip routing-table"
+        },
+        {
+            "vendor": "H3C",
+            "device_type": "交换机",
+            "category": "邻居信息",
+            "description": "LLDP 邻居",
+            "command": "display lldp neighbor-information brief"
+        },
+        {
+            "vendor": "H3C",
+            "device_type": "交换机",
+            "category": "邻居信息",
+            "description": "OSPF 邻居状态",
+            "command": "display ospf peer brief"
+        },
+        {
+            "vendor": "H3C",
+            "device_type": "交换机",
+            "category": "高可用",
+            "description": "VRRP 状态",
+            "command": "display vrrp brief"
+        },
+        {
+            "vendor": "H3C",
+            "device_type": "交换机",
+            "category": "堆叠/IRF",
+            "description": "IRF 成员状态",
+            "command": "display irf"
+        },
+        {
+            "vendor": "H3C",
+            "device_type": "交换机",
+            "category": "堆叠/IRF",
+            "description": "IRF 链路状态",
+            "command": "display irf link"
+        },
+        {
+            "vendor": "H3C",
+            "device_type": "交换机",
+            "category": "堆叠/IRF",
+            "description": "IRF 拓扑",
+            "command": "display irf topology"
+        },
+        {
+            "vendor": "H3C",
+            "device_type": "交换机",
+            "category": "M-LAG",
+            "description": "M-LAG 状态",
+            "command": "display m-lag brief"
+        },
+        {
+            "vendor": "H3C",
+            "device_type": "交换机",
+            "category": "M-LAG",
+            "description": "M-LAG 成员接口",
+            "command": "display m-lag interface"
+        },
+        {
+            "vendor": "H3C",
+            "device_type": "交换机",
+            "category": "链路聚合",
+            "description": "聚合组状态",
+            "command": "display link-aggregation verbose"
+        },
+        {
+            "vendor": "Juniper",
+            "device_type": "防火墙",
+            "category": "基本信息",
+            "description": "版本信息",
+            "command": "show version"
+        },
+        {
+            "vendor": "Juniper",
+            "device_type": "防火墙",
+            "category": "接口信息",
+            "description": "接口状态",
+            "command": "show interfaces terse"
+        },
+        {
+            "vendor": "Juniper",
+            "device_type": "防火墙",
+            "category": "系统状态",
+            "description": "系统告警",
+            "command": "show system alarms"
+        },
+        {
+            "vendor": "Juniper",
+            "device_type": "防火墙",
+            "category": "会话信息",
+            "description": "安全会话统计",
+            "command": "show security flow session summary"
+        },
+        {
+            "vendor": "Juniper",
+            "device_type": "防火墙",
+            "category": "安全策略",
+            "description": "安全策略",
+            "command": "show security policies"
+        },
+        {
+            "vendor": "Juniper",
+            "device_type": "防火墙",
+            "category": "高可用",
+            "description": "集群状态",
+            "command": "show chassis cluster status"
+        },
+        {
+            "vendor": "Juniper",
+            "device_type": "防火墙",
+            "category": "系统状态",
+            "description": "系统资源",
+            "command": "show system resources"
         },
         {
             "vendor": "Juniper",
             "device_type": "路由器",
             "category": "基本信息",
-            "description": "查看设备版本信息",
+            "description": "版本信息",
             "command": "show version"
         },
         {
             "vendor": "Juniper",
             "device_type": "路由器",
+            "category": "系统状态",
+            "description": "系统时间",
+            "command": "show system uptime"
+        },
+        {
+            "vendor": "Juniper",
+            "device_type": "路由器",
+            "category": "系统状态",
+            "description": "系统资源",
+            "command": "show system resources"
+        },
+        {
+            "vendor": "Juniper",
+            "device_type": "路由器",
             "category": "接口信息",
-            "description": "查看所有接口状态",
+            "description": "接口状态",
             "command": "show interface terse"
         },
         {
             "vendor": "Juniper",
             "device_type": "路由器",
             "category": "路由信息",
-            "description": "查看路由表",
+            "description": "路由表",
             "command": "show route"
         },
         {
             "vendor": "Juniper",
             "device_type": "路由器",
+            "category": "邻居信息",
+            "description": "OSPF 邻居",
+            "command": "show ospf neighbor"
+        },
+        {
+            "vendor": "Juniper",
+            "device_type": "路由器",
+            "category": "邻居信息",
+            "description": "BGP 邻居",
+            "command": "show bgp summary"
+        },
+        {
+            "vendor": "Juniper",
+            "device_type": "路由器",
             "category": "系统状态",
-            "description": "查看系统信息",
+            "description": "系统信息",
             "command": "show system information"
         },
         {
             "vendor": "Fortinet",
             "device_type": "防火墙",
             "category": "基本信息",
-            "description": "查看设备版本信息",
+            "description": "版本信息",
             "command": "get system status"
         },
         {
             "vendor": "Fortinet",
             "device_type": "防火墙",
             "category": "系统状态",
-            "description": "查看CPU使用率",
+            "description": "CPU/内存使用率",
             "command": "get system performance status"
         },
         {
             "vendor": "Fortinet",
             "device_type": "防火墙",
             "category": "接口信息",
-            "description": "查看所有接口",
+            "description": "接口状态",
             "command": "get system interface"
         },
         {
             "vendor": "Fortinet",
             "device_type": "防火墙",
             "category": "会话信息",
-            "description": "查看会话表",
+            "description": "会话表",
             "command": "get system session list | head -50"
         },
         {
             "vendor": "Fortinet",
             "device_type": "防火墙",
             "category": "路由信息",
-            "description": "查看路由表",
+            "description": "路由表",
             "command": "get router info routing-table"
         },
         {
             "vendor": "Fortinet",
             "device_type": "防火墙",
-            "category": "日志信息",
-            "description": "查看日志",
-            "command": "execute log filter category 2 && execute log display | head -30"
+            "category": "高可用",
+            "description": "HA 状态",
+            "command": "get system ha status"
+        },
+        {
+            "vendor": "锐捷",
+            "device_type": "防火墙",
+            "category": "基本信息",
+            "description": "版本信息",
+            "command": "show version"
+        },
+        {
+            "vendor": "锐捷",
+            "device_type": "防火墙",
+            "category": "接口信息",
+            "description": "接口状态",
+            "command": "show interface"
+        },
+        {
+            "vendor": "锐捷",
+            "device_type": "防火墙",
+            "category": "系统状态",
+            "description": "CPU 使用率",
+            "command": "show cpu"
+        },
+        {
+            "vendor": "锐捷",
+            "device_type": "防火墙",
+            "category": "系统状态",
+            "description": "内存使用率",
+            "command": "show memory"
+        },
+        {
+            "vendor": "锐捷",
+            "device_type": "防火墙",
+            "category": "系统状态",
+            "description": "系统日志",
+            "command": "show log"
         },
         {
             "vendor": "锐捷",
             "device_type": "路由器",
             "category": "基本信息",
-            "description": "查看设备版本信息",
+            "description": "版本信息",
             "command": "show version"
         },
         {
             "vendor": "锐捷",
             "device_type": "路由器",
+            "category": "系统状态",
+            "description": "系统时间",
+            "command": "show clock"
+        },
+        {
+            "vendor": "锐捷",
+            "device_type": "路由器",
+            "category": "系统状态",
+            "description": "CPU 使用率",
+            "command": "show cpu"
+        },
+        {
+            "vendor": "锐捷",
+            "device_type": "路由器",
+            "category": "系统状态",
+            "description": "内存使用率",
+            "command": "show memory"
+        },
+        {
+            "vendor": "锐捷",
+            "device_type": "路由器",
             "category": "接口信息",
-            "description": "查看所有接口状态",
+            "description": "接口状态摘要",
             "command": "show ip interface brief"
         },
         {
             "vendor": "锐捷",
             "device_type": "路由器",
             "category": "路由信息",
-            "description": "查看路由表",
+            "description": "路由表",
             "command": "show ip route"
+        },
+        {
+            "vendor": "锐捷",
+            "device_type": "路由器",
+            "category": "邻居信息",
+            "description": "OSPF 邻居",
+            "command": "show ip ospf neighbor"
+        },
+        {
+            "vendor": "锐捷",
+            "device_type": "路由器",
+            "category": "ARP信息",
+            "description": "ARP 表",
+            "command": "show arp"
         },
         {
             "vendor": "锐捷",
             "device_type": "交换机",
             "category": "基本信息",
-            "description": "查看设备版本信息",
+            "description": "版本信息",
             "command": "show version"
         },
         {
             "vendor": "锐捷",
             "device_type": "交换机",
+            "category": "系统状态",
+            "description": "系统时间",
+            "command": "show clock"
+        },
+        {
+            "vendor": "锐捷",
+            "device_type": "交换机",
+            "category": "系统状态",
+            "description": "CPU 使用率",
+            "command": "show cpu"
+        },
+        {
+            "vendor": "锐捷",
+            "device_type": "交换机",
+            "category": "系统状态",
+            "description": "内存使用率",
+            "command": "show memory"
+        },
+        {
+            "vendor": "锐捷",
+            "device_type": "交换机",
+            "category": "系统状态",
+            "description": "系统日志",
+            "command": "show log"
+        },
+        {
+            "vendor": "锐捷",
+            "device_type": "交换机",
             "category": "接口信息",
-            "description": "查看所有接口状态",
+            "description": "接口状态",
             "command": "show interface status"
         },
         {
             "vendor": "锐捷",
             "device_type": "交换机",
+            "category": "接口信息",
+            "description": "接口IP摘要",
+            "command": "show ip interface brief"
+        },
+        {
+            "vendor": "锐捷",
+            "device_type": "交换机",
             "category": "VLAN信息",
-            "description": "查看VLAN",
+            "description": "VLAN 列表",
             "command": "show vlan"
+        },
+        {
+            "vendor": "锐捷",
+            "device_type": "交换机",
+            "category": "生成树",
+            "description": "生成树状态",
+            "command": "show spanning-tree"
+        },
+        {
+            "vendor": "锐捷",
+            "device_type": "交换机",
+            "category": "MAC信息",
+            "description": "MAC 地址表",
+            "command": "show mac address-table"
+        },
+        {
+            "vendor": "锐捷",
+            "device_type": "交换机",
+            "category": "ARP信息",
+            "description": "ARP 表",
+            "command": "show arp"
+        },
+        {
+            "vendor": "锐捷",
+            "device_type": "交换机",
+            "category": "路由信息",
+            "description": "路由表",
+            "command": "show ip route"
+        },
+        {
+            "vendor": "锐捷",
+            "device_type": "交换机",
+            "category": "邻居信息",
+            "description": "LLDP 邻居",
+            "command": "show lldp neighbors detail"
+        },
+        {
+            "vendor": "锐捷",
+            "device_type": "交换机",
+            "category": "邻居信息",
+            "description": "OSPF 邻居",
+            "command": "show ip ospf neighbor"
+        },
+        {
+            "vendor": "锐捷",
+            "device_type": "交换机",
+            "category": "高可用",
+            "description": "VRRP 状态",
+            "command": "show vrrp"
+        },
+        {
+            "vendor": "锐捷",
+            "device_type": "交换机",
+            "category": "堆叠",
+            "description": "VSU 堆叠状态",
+            "command": "show switch virtual"
+        },
+        {
+            "vendor": "锐捷",
+            "device_type": "交换机",
+            "category": "堆叠",
+            "description": "VSU 链路状态",
+            "command": "show switch virtual link"
+        },
+        {
+            "vendor": "锐捷",
+            "device_type": "交换机",
+            "category": "链路聚合",
+            "description": "聚合组状态",
+            "command": "show aggregateport summary"
+        },
+        {
+            "vendor": "浪潮",
+            "device_type": "交换机",
+            "category": "基本信息",
+            "description": "版本信息",
+            "command": "show version"
+        },
+        {
+            "vendor": "浪潮",
+            "device_type": "交换机",
+            "category": "系统状态",
+            "description": "系统时间",
+            "command": "show clock"
+        },
+        {
+            "vendor": "浪潮",
+            "device_type": "交换机",
+            "category": "系统状态",
+            "description": "CPU 使用率",
+            "command": "show cpu"
+        },
+        {
+            "vendor": "浪潮",
+            "device_type": "交换机",
+            "category": "系统状态",
+            "description": "内存使用率",
+            "command": "show memory"
+        },
+        {
+            "vendor": "浪潮",
+            "device_type": "交换机",
+            "category": "系统状态",
+            "description": "日志信息",
+            "command": "show log"
+        },
+        {
+            "vendor": "浪潮",
+            "device_type": "交换机",
+            "category": "接口信息",
+            "description": "接口状态",
+            "command": "show interface status"
+        },
+        {
+            "vendor": "浪潮",
+            "device_type": "交换机",
+            "category": "接口信息",
+            "description": "接口IP摘要",
+            "command": "show ip interface brief"
+        },
+        {
+            "vendor": "浪潮",
+            "device_type": "交换机",
+            "category": "VLAN信息",
+            "description": "VLAN 列表",
+            "command": "show vlan"
+        },
+        {
+            "vendor": "浪潮",
+            "device_type": "交换机",
+            "category": "生成树",
+            "description": "生成树状态",
+            "command": "show spanning-tree"
+        },
+        {
+            "vendor": "浪潮",
+            "device_type": "交换机",
+            "category": "MAC信息",
+            "description": "MAC 地址表",
+            "command": "show mac address-table"
+        },
+        {
+            "vendor": "浪潮",
+            "device_type": "交换机",
+            "category": "ARP信息",
+            "description": "ARP 表",
+            "command": "show arp"
+        },
+        {
+            "vendor": "浪潮",
+            "device_type": "交换机",
+            "category": "路由信息",
+            "description": "路由表",
+            "command": "show ip route"
+        },
+        {
+            "vendor": "浪潮",
+            "device_type": "交换机",
+            "category": "邻居信息",
+            "description": "LLDP 邻居",
+            "command": "show lldp neighbors detail"
+        },
+        {
+            "vendor": "浪潮",
+            "device_type": "交换机",
+            "category": "邻居信息",
+            "description": "OSPF 邻居",
+            "command": "show ip ospf neighbor"
+        },
+        {
+            "vendor": "浪潮",
+            "device_type": "交换机",
+            "category": "高可用",
+            "description": "VRRP 状态",
+            "command": "show vrrp"
+        },
+        {
+            "vendor": "浪潮",
+            "device_type": "交换机",
+            "category": "堆叠",
+            "description": "堆叠成员状态",
+            "command": "show switch"
+        },
+        {
+            "vendor": "浪潮",
+            "device_type": "交换机",
+            "category": "链路聚合",
+            "description": "聚合组状态",
+            "command": "show etherchannel summary"
+        },
+        {
+            "vendor": "浪潮",
+            "device_type": "路由器",
+            "category": "基本信息",
+            "description": "版本信息",
+            "command": "show version"
+        },
+        {
+            "vendor": "浪潮",
+            "device_type": "路由器",
+            "category": "系统状态",
+            "description": "系统时间",
+            "command": "show clock"
+        },
+        {
+            "vendor": "浪潮",
+            "device_type": "路由器",
+            "category": "系统状态",
+            "description": "CPU 使用率",
+            "command": "show cpu"
+        },
+        {
+            "vendor": "浪潮",
+            "device_type": "路由器",
+            "category": "系统状态",
+            "description": "内存使用率",
+            "command": "show memory"
+        },
+        {
+            "vendor": "浪潮",
+            "device_type": "路由器",
+            "category": "接口信息",
+            "description": "接口IP摘要",
+            "command": "show ip interface brief"
+        },
+        {
+            "vendor": "浪潮",
+            "device_type": "路由器",
+            "category": "路由信息",
+            "description": "路由表",
+            "command": "show ip route"
+        },
+        {
+            "vendor": "浪潮",
+            "device_type": "路由器",
+            "category": "邻居信息",
+            "description": "OSPF 邻居",
+            "command": "show ip ospf neighbor"
         },
         {
             "vendor": "深信服",
             "device_type": "防火墙",
             "category": "基本信息",
-            "description": "查看设备版本信息",
+            "description": "版本信息",
             "command": "dis version"
         },
         {
             "vendor": "深信服",
             "device_type": "防火墙",
             "category": "系统状态",
-            "description": "查看CPU使用率",
+            "description": "CPU 使用率",
             "command": "dis cpu"
         },
         {
             "vendor": "深信服",
             "device_type": "防火墙",
             "category": "系统状态",
-            "description": "查看内存使用",
+            "description": "内存使用率",
             "command": "dis memory"
         },
         {
             "vendor": "深信服",
             "device_type": "防火墙",
             "category": "接口信息",
-            "description": "查看所有接口",
+            "description": "接口状态",
             "command": "dis interface brief"
         },
         {
             "vendor": "深信服",
             "device_type": "防火墙",
             "category": "会话信息",
-            "description": "查看会话数",
+            "description": "会话数统计",
             "command": "dis session statistics"
         },
         {
             "vendor": "其他",
             "device_type": "路由器",
             "category": "基本信息",
-            "description": "查看设备版本信息",
+            "description": "版本信息",
             "command": "show version"
         },
         {
             "vendor": "其他",
             "device_type": "交换机",
             "category": "基本信息",
-            "description": "查看设备版本信息",
+            "description": "版本信息",
             "command": "show version"
         },
         {
             "vendor": "其他",
             "device_type": "防火墙",
             "category": "基本信息",
-            "description": "查看设备版本信息",
+            "description": "版本信息",
             "command": "show version"
         }
     ],
@@ -429,6 +1423,7 @@
         "Fortinet",
         "锐捷",
         "深信服",
+        "浪潮",
         "其他"
     ],
     "device_types": [
