@@ -1,9 +1,1 @@
-__pycache__/
-*.pyc
-*.egg-info/
-dist/
-build/
-*.spec.bak
-.DS_Store
-venv/
-.env
+test
