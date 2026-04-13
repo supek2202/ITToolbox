@@ -5,7 +5,7 @@ a = Analysis(
     ['net_inspector.py'],
     pathex=[],
     binaries=[],
-    datas=[],
+    datas=[('commands.json', '.')],
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},
@@ -46,5 +46,5 @@ app = BUNDLE(
     coll,
     name='NetInspector.app',
     icon=None,
-    bundle_identifier='com.netinspector.app',
+    bundle_identifier=None,
 )
