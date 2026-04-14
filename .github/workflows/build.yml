@@ -22,11 +22,10 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install pyinstaller netmiko paramiko pillow
-          pip list
 
       - name: Build with PyInstaller
         run: |
-          pyinstaller --noconfirm --onedir --windowed ^
+          pyinstaller --noconfirm --windowed --onefile ^
             --name "IT工具箱" ^
             --add-data "commands.json;." ^
             --hidden-import=netmiko ^
@@ -38,5 +37,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: IT工具箱-Windows
-          path: dist/IT工具箱/
+          path: dist/IT工具箱.exe
           retention-days: 30
