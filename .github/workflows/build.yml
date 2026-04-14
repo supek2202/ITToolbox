@@ -27,16 +27,16 @@ jobs:
       - name: Build with PyInstaller
         run: |
           pyinstaller --noconfirm --onedir --windowed ^
-            --name NetInspector ^
+            --name "IT工具箱" ^
             --add-data "commands.json;." ^
             --hidden-import=netmiko ^
             --hidden-import=paramiko ^
             --hidden-import=PIL ^
-            net_inspector.py
+            it_toolbox.py
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: NetInspector-Windows
-          path: dist/NetInspector/
+          name: IT工具箱-Windows
+          path: dist/IT工具箱/
           retention-days: 30
