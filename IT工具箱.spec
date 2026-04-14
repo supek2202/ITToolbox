@@ -1,11 +1,12 @@
 # -*- mode: python ; coding: utf-8 -*-
 
+
 a = Analysis(
     ['it_toolbox.py'],
     pathex=[],
     binaries=[],
     datas=[('commands.json', '.')],
-    hiddenimports=[],
+    hiddenimports=['netmiko', 'paramiko', 'PIL', 'PIL._tkinter_finder'],
     hookspath=[],
     hooksconfig={},
     runtime_hooks=[],
@@ -18,13 +19,16 @@ pyz = PYZ(a.pure)
 exe = EXE(
     pyz,
     a.scripts,
+    a.binaries,
+    a.datas,
     [],
-    exclude_binaries=True,
     name='IT工具箱',
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
     upx=True,
+    upx_exclude=[],
+    runtime_tmpdir=None,
     console=False,
     disable_windowed_traceback=False,
     argv_emulation=False,
@@ -32,18 +36,9 @@ exe = EXE(
     codesign_identity=None,
     entitlements_file=None,
 )
-coll = COLLECT(
-    exe,
-    a.binaries,
-    a.datas,
-    strip=False,
-    upx=True,
-    upx_exclude=[],
-    name='IT工具箱',
-)
 app = BUNDLE(
-    coll,
+    exe,
     name='IT工具箱.app',
-    icon='/tmp/app_icon.icns',
-    bundle_identifier='com.ittoolbox.app',
+    icon=None,
+    bundle_identifier=None,
 )
