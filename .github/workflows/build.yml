@@ -5,6 +5,9 @@ on:
     branches: [main]
   workflow_dispatch:
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   build:
     runs-on: windows-latest
@@ -25,17 +28,21 @@ jobs:
 
       - name: Build with PyInstaller
         run: |
-          pyinstaller --noconfirm --windowed --onefile ^
-            --name "IT工具箱" ^
-            --add-data "commands.json;." ^
-            --hidden-import=netmiko ^
-            --hidden-import=paramiko ^
-            --hidden-import=PIL ^
+          pyinstaller --noconfirm --onedir --windowed `
+            --name ITToolbox `
+            --add-data "commands.json;." `
+            --hidden-import=netmiko `
+            --hidden-import=paramiko `
+            --hidden-import=PIL `
             it_toolbox.py
+
+      - name: Rename output
+        run: |
+          mv dist/ITToolbox "dist/IT工具箱"
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: IT工具箱-Windows
-          path: dist/IT工具箱.exe
+          path: dist/IT工具箱/
           retention-days: 30
