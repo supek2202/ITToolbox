@@ -34,7 +34,7 @@ class DeviceInspectorApp:
     def __init__(self, root):
         self.root = root
         self.root.title("IT工具箱 v1.0 - 网络设备巡检工具")
-        self.root.geometry("740x520")
+        self.root.geometry("820x520")
         self.root.resizable(False, False)
 
         # 数据文件路径 - 支持打包后路径
@@ -120,15 +120,15 @@ class DeviceInspectorApp:
         tool_menu.menu.add_command(label="📡 子网扫描", command=self.show_subnet_scan_dialog)
         tool_menu.menu.add_command(label="📶 批量Ping", command=self.show_batch_ping_dialog)
 
-        tk.Button(toolbar, text="➕ 添加设备", relief=tk.FLAT, bg="#f0f0f0",
+        tk.Button(toolbar, text="➕ 添加设备", relief=tk.FLAT, bg="#e0e0e0",
                   command=self.show_add_device_dialog).pack(side=tk.LEFT, padx=2)
-        tk.Button(toolbar, text="▶️ 执行巡检", relief=tk.FLAT, bg="#f0f0f0",
+        tk.Button(toolbar, text="▶️ 执行巡检", relief=tk.FLAT, bg="#e0e0e0",
                   command=self.run_inspection).pack(side=tk.LEFT, padx=2)
-        tk.Button(toolbar, text="📤 导出巡检信息", relief=tk.FLAT, bg="#f0f0f0",
+        tk.Button(toolbar, text="📤 导出巡检信息", relief=tk.FLAT, bg="#e0e0e0",
                   command=self.export_report).pack(side=tk.LEFT, padx=2)
-        tk.Button(toolbar, text="📝 命令管理", relief=tk.FLAT, bg="#f0f0f0",
+        tk.Button(toolbar, text="📝 命令管理", relief=tk.FLAT, bg="#e0e0e0",
                   command=self.show_commands_manager).pack(side=tk.LEFT, padx=2)
-        tk.Button(toolbar, text="🔄 刷新", relief=tk.FLAT, bg="#f0f0f0",
+        tk.Button(toolbar, text="🔄 刷新", relief=tk.FLAT, bg="#e0e0e0",
                   command=self.refresh_device_list).pack(side=tk.LEFT, padx=2)
 
         # 主内容区 - 2x2网格布局
@@ -145,7 +145,7 @@ class DeviceInspectorApp:
         list_frame = tk.LabelFrame(top_frame, text="设备列表", padx=2, pady=2)
         list_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=(0, 2), pady=(0, 1))
 
-        columns = ("序号", "类型", "厂商", "IP", "协议端口", "状态")
+        columns = ("序号", "类型", "厂商", "IP", "协议端口", "用户", "密码", "特权", "状态")
         self.device_tree = ttk.Treeview(list_frame, columns=columns, show="headings", height=7)
 
         self.device_tree.heading("序号", text="#")
@@ -153,19 +153,36 @@ class DeviceInspectorApp:
         self.device_tree.heading("厂商", text="厂商")
         self.device_tree.heading("IP", text="IP地址")
         self.device_tree.heading("协议端口", text="协议/端口")
+        self.device_tree.heading("用户", text="用户")
+        self.device_tree.heading("密码", text="密码")
+        self.device_tree.heading("特权", text="特权")
         self.device_tree.heading("状态", text="状态")
 
         self.device_tree.column("序号", width=30, anchor="center")
-        self.device_tree.column("类型", width=60, anchor="center")
-        self.device_tree.column("厂商", width=60, anchor="center")
-        self.device_tree.column("IP", width=100, anchor="center")
-        self.device_tree.column("协议端口", width=70, anchor="center")
+        self.device_tree.column("类型", width=50, anchor="center")
+        self.device_tree.column("厂商", width=50, anchor="center")
+        self.device_tree.column("IP", width=90, anchor="center")
+        self.device_tree.column("协议端口", width=60, anchor="center")
+        self.device_tree.column("用户", width=60, anchor="center")
+        self.device_tree.column("密码", width=60, anchor="center")
+        self.device_tree.column("特权", width=60, anchor="center")
         self.device_tree.column("状态", width=50, anchor="center")
 
-        vsb = ttk.Scrollbar(list_frame, orient="vertical", command=self.device_tree.yview)
-        self.device_tree.configure(yscrollcommand=vsb.set)
-        self.device_tree.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+        # 水平滚动条 - 需要在treeview之前创建
+        hsb = ttk.Scrollbar(list_frame, orient="horizontal")
+        hsb.pack(side=tk.BOTTOM, fill=tk.X)
+        
+        # 垂直滚动条
+        vsb = ttk.Scrollbar(list_frame, orient="vertical")
         vsb.pack(side=tk.RIGHT, fill=tk.Y)
+        
+        # treeview配置滚动条
+        self.device_tree.configure(yscrollcommand=vsb.set, xscrollcommand=hsb.set)
+        vsb.configure(command=self.device_tree.yview)
+        hsb.configure(command=self.device_tree.xview)
+        
+        # treeview使用pack，设置足够宽度启用水平滚动
+        self.device_tree.pack(side=tk.LEFT, fill=tk.BOTH)
 
         self.device_tree.bind("<Double-1>", self.on_device_double_click)
         self.device_tree.bind("<Button-3>", self.show_device_context_menu)
@@ -176,33 +193,37 @@ class DeviceInspectorApp:
 
         form_frame = tk.Frame(detail_frame)
         form_frame.pack(fill=tk.X)
+        form_frame.columnconfigure(0, minsize=65)  # 标签列固定宽度，右对齐
+
+        label_opts = dict(sticky=tk.E, padx=2, pady=1)
+        entry_opts = dict(sticky=tk.EW, padx=2, pady=1)
 
         # 类型
-        tk.Label(form_frame, text="类型:").grid(row=0, column=0, sticky=tk.W, padx=2, pady=1)
+        tk.Label(form_frame, text="类型:").grid(row=0, column=0, **label_opts)
         self.info_device_type = ttk.Combobox(form_frame, values=self.commands_data.get("device_types", []),
                                               state="readonly", width=15)
-        self.info_device_type.grid(row=0, column=1, sticky=tk.W, padx=2, pady=1)
+        self.info_device_type.grid(row=0, column=1, **entry_opts)
 
         # 厂商
-        tk.Label(form_frame, text="厂商:").grid(row=1, column=0, sticky=tk.W, padx=2, pady=1)
+        tk.Label(form_frame, text="厂商:").grid(row=1, column=0, **label_opts)
         self.info_vendor = ttk.Combobox(form_frame, values=self.commands_data.get("vendors", []),
                                          state="readonly", width=15)
-        self.info_vendor.grid(row=1, column=1, sticky=tk.W, padx=2, pady=1)
+        self.info_vendor.grid(row=1, column=1, **entry_opts)
 
         # 型号
-        tk.Label(form_frame, text="型号:").grid(row=2, column=0, sticky=tk.W, padx=2, pady=1)
+        tk.Label(form_frame, text="型号:").grid(row=2, column=0, **label_opts)
         self.info_model = tk.Entry(form_frame, width=18)
-        self.info_model.grid(row=2, column=1, sticky=tk.W, padx=2, pady=1)
+        self.info_model.grid(row=2, column=1, **entry_opts)
 
         # IP
-        tk.Label(form_frame, text="IP:").grid(row=3, column=0, sticky=tk.W, padx=2, pady=1)
+        tk.Label(form_frame, text="IP:").grid(row=3, column=0, **label_opts)
         self.info_ip = tk.Entry(form_frame, width=18)
-        self.info_ip.grid(row=3, column=1, sticky=tk.W, padx=2, pady=1)
+        self.info_ip.grid(row=3, column=1, **entry_opts)
 
         # 协议/端口（同行）
-        tk.Label(form_frame, text="协议/端口:").grid(row=4, column=0, sticky=tk.W, padx=2, pady=1)
+        tk.Label(form_frame, text="协议/端口:").grid(row=4, column=0, **label_opts)
         proto_frame = tk.Frame(form_frame)
-        proto_frame.grid(row=4, column=1, sticky=tk.W, padx=2, pady=1)
+        proto_frame.grid(row=4, column=1, **entry_opts)
         self.info_protocol = ttk.Combobox(proto_frame, values=["SSH", "Telnet"], state="readonly", width=6)
         self.info_protocol.pack(side=tk.LEFT)
         tk.Label(proto_frame, text="/").pack(side=tk.LEFT, padx=2)
@@ -220,19 +241,19 @@ class DeviceInspectorApp:
         self.info_protocol.bind("<<ComboboxSelected>>", on_info_protocol_change)
 
         # 用户
-        tk.Label(form_frame, text="用户:").grid(row=5, column=0, sticky=tk.W, padx=2, pady=1)
+        tk.Label(form_frame, text="用户:").grid(row=5, column=0, **label_opts)
         self.info_username = tk.Entry(form_frame, width=18)
-        self.info_username.grid(row=5, column=1, sticky=tk.W, padx=2, pady=1)
+        self.info_username.grid(row=5, column=1, **entry_opts)
 
         # 密码
-        tk.Label(form_frame, text="密码:").grid(row=6, column=0, sticky=tk.W, padx=2, pady=1)
-        self.info_password = tk.Entry(form_frame, show="*", width=18)
-        self.info_password.grid(row=6, column=1, sticky=tk.W, padx=2, pady=1)
+        tk.Label(form_frame, text="密码:").grid(row=6, column=0, **label_opts)
+        self.info_password = tk.Entry(form_frame, show="●", width=18)
+        self.info_password.grid(row=6, column=1, **entry_opts)
 
         # 特权密码
-        tk.Label(form_frame, text="特权:").grid(row=7, column=0, sticky=tk.W, padx=2, pady=1)
-        self.info_enable = tk.Entry(form_frame, show="*", width=18)
-        self.info_enable.grid(row=7, column=1, sticky=tk.W, padx=2, pady=1)
+        tk.Label(form_frame, text="特权:").grid(row=7, column=0, **label_opts)
+        self.info_enable = tk.Entry(form_frame, show="●", width=18)
+        self.info_enable.grid(row=7, column=1, **entry_opts)
 
         # 按钮行（单独一行）
         btn_frame = tk.Frame(detail_frame)
@@ -288,17 +309,22 @@ class DeviceInspectorApp:
         # 填充数据
         for i, device in enumerate(self.devices):
             status = device.get("status", "未知")
-            last_inspect = device.get("last_inspect", "未巡检")
+            # 密码用 ● 隐藏显示
+            pwd = device.get("password", "")
+            pwd_display = "●" * len(pwd) if pwd else ""
+            enable_pwd = device.get("enable", "")
+            enable_display = "●" * len(enable_pwd) if enable_pwd else ""
 
             self.device_tree.insert("", tk.END, values=(
                 i + 1,
                 device.get("device_type", ""),
                 device.get("vendor", ""),
-                device.get("model", ""),
                 device.get("ip", ""),
                 f"{device.get('protocol', 'SSH')}/{device.get('port', '22')}",
-                status,
-                last_inspect
+                device.get("username", ""),
+                pwd_display,
+                enable_display,
+                status
             ), tags=(device.get("id", ""),))
 
     def show_discovery_dialog(self):
@@ -577,62 +603,67 @@ class DeviceInspectorApp:
             messagebox.showinfo("成功", f"已添加 {len(discovery_results)} 台设备")
             dialog.destroy()
 
-        # 按钮
-        btn_frame = ttk.Frame(dialog)
-        btn_frame.pack(side=tk.BOTTOM, pady=3)
+        # 按钮（在结果区域之前显示）
+        btn_frame = tk.Frame(dialog)
+        btn_frame.pack(before=result_listbox, pady=3)
 
-        discovery_btn = ttk.Button(btn_frame, text="开始扫描", command=start_discovery)
+        discovery_btn = tk.Button(btn_frame, text="开始扫描", relief=tk.FLAT, bg="#e0e0e0", command=start_discovery)
         discovery_btn.pack(side=tk.LEFT, padx=5)
 
-        add_btn = ttk.Button(btn_frame, text="添加到设备库", command=add_discovered_devices, state=tk.DISABLED)
+        add_btn = tk.Button(btn_frame, text="添加到设备库", relief=tk.FLAT, bg="#e0e0e0", command=add_discovered_devices, state=tk.DISABLED)
         add_btn.pack(side=tk.LEFT, padx=5)
 
-        ttk.Button(btn_frame, text="关闭", command=dialog.destroy).pack(side=tk.LEFT, padx=5)
+        tk.Button(btn_frame, text="关闭", relief=tk.FLAT, bg="#e0e0e0", command=dialog.destroy).pack(side=tk.LEFT, padx=5)
 
     def show_add_device_dialog(self):
         """显示添加设备对话框"""
         dialog = tk.Toplevel(self.root)
         dialog.title("添加设备")
-        dialog.geometry("480x520")
+        dialog.geometry("380x450")
+        dialog.resizable(False, False)
         dialog.transient(self.root)
         dialog.grab_set()
 
-        # 表单
-        form_frame = ttk.Frame(dialog, padding=20)
+        # 表单容器
+        form_frame = tk.Frame(dialog, padx=20, pady=16)
         form_frame.pack(fill=tk.BOTH, expand=True)
 
+        label_opts = dict(sticky=tk.E, padx=(0, 8), pady=5)
+        entry_opts = dict(sticky=tk.EW, pady=5)
+        form_frame.columnconfigure(0, minsize=75)  # 标签列固定宽度
+        form_frame.columnconfigure(1, weight=1)
+
         # 设备类型
-        ttk.Label(form_frame, text="设备类型:").grid(row=0, column=0, sticky=tk.W, pady=8)
-        device_type = ttk.Combobox(form_frame, values=self.commands_data.get("device_types", []), state="readonly", width=25)
-        device_type.grid(row=0, column=1, sticky=tk.W, pady=8)
+        tk.Label(form_frame, text="设备类型:").grid(row=0, column=0, **label_opts)
+        device_type = ttk.Combobox(form_frame, values=self.commands_data.get("device_types", []), state="readonly", width=20)
+        device_type.grid(row=0, column=1, **entry_opts)
         device_type.current(0)
 
         # 厂商
-        ttk.Label(form_frame, text="厂商:").grid(row=1, column=0, sticky=tk.W, pady=8)
-        vendor = ttk.Combobox(form_frame, values=self.commands_data.get("vendors", []), state="readonly", width=25)
-        vendor.grid(row=1, column=1, sticky=tk.W, pady=8)
+        tk.Label(form_frame, text="厂商:").grid(row=1, column=0, **label_opts)
+        vendor = ttk.Combobox(form_frame, values=self.commands_data.get("vendors", []), state="readonly", width=20)
+        vendor.grid(row=1, column=1, **entry_opts)
         vendor.current(0)
 
         # 型号
-        ttk.Label(form_frame, text="型号:").grid(row=2, column=0, sticky=tk.W, pady=8)
-        model = ttk.Entry(form_frame, width=28)
-        model.grid(row=2, column=1, sticky=tk.W, pady=8)
+        tk.Label(form_frame, text="型号:").grid(row=2, column=0, **label_opts)
+        model = tk.Entry(form_frame, width=22)
+        model.grid(row=2, column=1, **entry_opts)
 
         # IP
-        ttk.Label(form_frame, text="IP地址:").grid(row=3, column=0, sticky=tk.W, pady=8)
-        ip = ttk.Entry(form_frame, width=28)
-        ip.grid(row=3, column=1, sticky=tk.W, pady=8)
+        tk.Label(form_frame, text="IP地址:").grid(row=3, column=0, **label_opts)
+        ip = tk.Entry(form_frame, width=22)
+        ip.grid(row=3, column=1, **entry_opts)
 
-        # 端口
-        # 协议/端口（在同行）
-        ttk.Label(form_frame, text="协议/端口:").grid(row=4, column=0, sticky=tk.W, pady=8)
-        protocol_port_frame = ttk.Frame(form_frame)
-        protocol_port_frame.grid(row=4, column=1, sticky=tk.W, pady=8)
-        protocol = ttk.Combobox(protocol_port_frame, values=["SSH", "Telnet"], state="readonly", width=10)
+        # 协议/端口
+        tk.Label(form_frame, text="协议/端口:").grid(row=4, column=0, **label_opts)
+        protocol_port_frame = tk.Frame(form_frame)
+        protocol_port_frame.grid(row=4, column=1, **entry_opts)
+        protocol = ttk.Combobox(protocol_port_frame, values=["SSH", "Telnet"], state="readonly", width=8)
         protocol.pack(side=tk.LEFT)
         protocol.current(0)
-        ttk.Label(protocol_port_frame, text=" / ").pack(side=tk.LEFT)
-        port = ttk.Entry(protocol_port_frame, width=10)
+        tk.Label(protocol_port_frame, text="  ").pack(side=tk.LEFT)
+        port = tk.Entry(protocol_port_frame, width=8)
         port.insert(0, "22")
         port.pack(side=tk.LEFT)
 
@@ -647,19 +678,19 @@ class DeviceInspectorApp:
         protocol.bind("<<ComboboxSelected>>", on_protocol_change)
 
         # 用户名
-        ttk.Label(form_frame, text="用户名:").grid(row=5, column=0, sticky=tk.W, pady=8)
-        username = ttk.Entry(form_frame, width=28)
-        username.grid(row=5, column=1, sticky=tk.W, pady=8)
+        tk.Label(form_frame, text="用户名:").grid(row=5, column=0, **label_opts)
+        username = tk.Entry(form_frame, width=22)
+        username.grid(row=5, column=1, **entry_opts)
 
         # 密码
-        ttk.Label(form_frame, text="密码:").grid(row=6, column=0, sticky=tk.W, pady=8)
-        password = ttk.Entry(form_frame, show="*", width=28)
-        password.grid(row=6, column=1, sticky=tk.W, pady=8)
+        tk.Label(form_frame, text="密码:").grid(row=6, column=0, **label_opts)
+        password = tk.Entry(form_frame, show="●", width=22)
+        password.grid(row=6, column=1, **entry_opts)
 
-        # Enable密码
-        ttk.Label(form_frame, text="特权密码:").grid(row=7, column=0, sticky=tk.W, pady=8)
-        enable = ttk.Entry(form_frame, show="*", width=28)
-        enable.grid(row=7, column=1, sticky=tk.W, pady=8)
+        # 特权密码
+        tk.Label(form_frame, text="特权密码:").grid(row=7, column=0, **label_opts)
+        enable = tk.Entry(form_frame, show="●", width=22)
+        enable.grid(row=7, column=1, **entry_opts)
 
         def save():
             """保存设备"""
@@ -690,10 +721,10 @@ class DeviceInspectorApp:
             dialog.destroy()
 
         # 按钮
-        btn_frame = ttk.Frame(form_frame)
-        btn_frame.grid(row=9, column=0, columnspan=2, pady=15)
-        ttk.Button(btn_frame, text="保存", command=save).pack(side=tk.LEFT, padx=5)
-        ttk.Button(btn_frame, text="取消", command=dialog.destroy).pack(side=tk.LEFT, padx=5)
+        btn_frame = tk.Frame(form_frame)
+        btn_frame.grid(row=9, column=0, columnspan=2, pady=(20, 5))
+        tk.Button(btn_frame, text="保存", relief=tk.FLAT, bg="#e0e0e0", command=save).pack(side=tk.LEFT, padx=5)
+        tk.Button(btn_frame, text="取消", relief=tk.FLAT, bg="#e0e0e0", command=dialog.destroy).pack(side=tk.LEFT, padx=5)
 
     def on_device_double_click(self, event):
         """双击设备查看详情"""
@@ -839,9 +870,9 @@ class DeviceInspectorApp:
         def select_all():
             listbox.select_set(0, tk.END)
 
-        btn_frame = ttk.Frame(dialog)
+        btn_frame = tk.Frame(dialog)
         btn_frame.pack(pady=3)
-        ttk.Button(btn_frame, text="全选", command=select_all).pack(side=tk.LEFT, padx=5)
+        tk.Button(btn_frame, text="全选", relief=tk.FLAT, bg="#e0e0e0", command=select_all).pack(side=tk.LEFT, padx=5)
 
         def start_inspect():
             """开始巡检"""
@@ -858,8 +889,8 @@ class DeviceInspectorApp:
             thread.daemon = True
             thread.start()
 
-        ttk.Button(btn_frame, text="开始巡检", command=start_inspect).pack(side=tk.LEFT, padx=5)
-        ttk.Button(btn_frame, text="取消", command=dialog.destroy).pack(side=tk.LEFT, padx=5)
+        tk.Button(btn_frame, text="开始巡检", relief=tk.FLAT, bg="#e0e0e0", command=start_inspect).pack(side=tk.LEFT, padx=5)
+        tk.Button(btn_frame, text="取消", relief=tk.FLAT, bg="#e0e0e0", command=dialog.destroy).pack(side=tk.LEFT, padx=5)
 
     def execute_inspection(self, devices):
         """执行巡检命令"""
@@ -1369,15 +1400,15 @@ class DeviceInspectorApp:
                 messagebox.showinfo("成功", "命令添加成功")
                 add_dialog.destroy()
 
-            ttk.Button(form_frame, text="保存", command=save).grid(row=5, column=1, sticky=tk.W, pady=3)
+            tk.Button(form_frame, text="保存", relief=tk.FLAT, bg="#e0e0e0", command=save).grid(row=5, column=1, sticky=tk.W, pady=3)
 
         # 按钮
-        btn_frame = ttk.Frame(dialog)
+        btn_frame = tk.Frame(dialog)
         btn_frame.pack(side=tk.BOTTOM, pady=3)
 
-        ttk.Button(btn_frame, text="添加命令", command=add_command).pack(side=tk.LEFT, padx=5)
-        ttk.Button(btn_frame, text="刷新", command=load_commands).pack(side=tk.LEFT, padx=5)
-        ttk.Button(btn_frame, text="关闭", command=dialog.destroy).pack(side=tk.LEFT, padx=5)
+        tk.Button(btn_frame, text="添加命令", relief=tk.FLAT, bg="#e0e0e0", command=add_command).pack(side=tk.LEFT, padx=5)
+        tk.Button(btn_frame, text="刷新", relief=tk.FLAT, bg="#e0e0e0", command=load_commands).pack(side=tk.LEFT, padx=5)
+        tk.Button(btn_frame, text="关闭", relief=tk.FLAT, bg="#e0e0e0", command=dialog.destroy).pack(side=tk.LEFT, padx=5)
 
         # 绑定筛选事件
         vendor_filter.bind("<<ComboboxSelected>>", lambda e: load_commands())
@@ -1425,7 +1456,7 @@ class DeviceInspectorApp:
             tk.Label(main_frame, text=feat, font=("Helvetica", 10), anchor=tk.W).pack(fill=tk.X, pady=2)
 
         # 确定按钮
-        ttk.Button(main_frame, text="确定", command=about_dialog.destroy).pack(pady=20)
+        tk.Button(main_frame, text="确定", relief=tk.FLAT, bg="#e0e0e0", command=about_dialog.destroy).pack(pady=20)
 
     def show_subnet_scan_dialog(self):
         """显示子网扫描对话框 - 支持整个子网段扫描"""
@@ -1702,14 +1733,14 @@ class DeviceInspectorApp:
             except Exception as e:
                 messagebox.showerror("错误", f"导出失败: {str(e)}")
 
-        # 按钮
-        btn_frame = ttk.Frame(dialog)
-        btn_frame.pack(side=tk.BOTTOM, pady=3)
+        # 按钮（在结果区域之前显示）
+        btn_frame = tk.Frame(dialog)
+        btn_frame.pack(before=result_frame, pady=3)
         
-        ttk.Button(btn_frame, text="开始扫描", command=start_scan).pack(side=tk.LEFT, padx=5)
-        ttk.Button(btn_frame, text="停止", command=stop_scan).pack(side=tk.LEFT, padx=5)
-        ttk.Button(btn_frame, text="导出结果", command=export_results).pack(side=tk.LEFT, padx=5)
-        ttk.Button(btn_frame, text="关闭", command=dialog.destroy).pack(side=tk.LEFT, padx=5)
+        tk.Button(btn_frame, text="开始扫描", relief=tk.FLAT, bg="#e0e0e0", command=start_scan).pack(side=tk.LEFT, padx=5)
+        tk.Button(btn_frame, text="停止", relief=tk.FLAT, bg="#e0e0e0", command=stop_scan).pack(side=tk.LEFT, padx=5)
+        tk.Button(btn_frame, text="导出结果", relief=tk.FLAT, bg="#e0e0e0", command=export_results).pack(side=tk.LEFT, padx=5)
+        tk.Button(btn_frame, text="关闭", relief=tk.FLAT, bg="#e0e0e0", command=dialog.destroy).pack(side=tk.LEFT, padx=5)
 
     def show_batch_ping_dialog(self):
         """显示批量Ping对话框"""
@@ -1980,14 +2011,14 @@ class DeviceInspectorApp:
             except Exception as e:
                 messagebox.showerror("错误", f"导出失败: {str(e)}")
 
-        # 按钮
-        btn_frame = ttk.Frame(dialog)
-        btn_frame.pack(side=tk.BOTTOM, pady=3)
+        # 按钮（在结果区域之前显示）
+        btn_frame = tk.Frame(dialog)
+        btn_frame.pack(before=result_frame, pady=3)
         
-        ttk.Button(btn_frame, text="开始Ping", command=start_ping).pack(side=tk.LEFT, padx=5)
-        ttk.Button(btn_frame, text="停止", command=stop_ping).pack(side=tk.LEFT, padx=5)
-        ttk.Button(btn_frame, text="导出结果", command=export_ping_results).pack(side=tk.LEFT, padx=5)
-        ttk.Button(btn_frame, text="关闭", command=dialog.destroy).pack(side=tk.LEFT, padx=5)
+        tk.Button(btn_frame, text="开始Ping", relief=tk.FLAT, bg="#e0e0e0", command=start_ping).pack(side=tk.LEFT, padx=5)
+        tk.Button(btn_frame, text="停止", relief=tk.FLAT, bg="#e0e0e0", command=stop_ping).pack(side=tk.LEFT, padx=5)
+        tk.Button(btn_frame, text="导出结果", relief=tk.FLAT, bg="#e0e0e0", command=export_ping_results).pack(side=tk.LEFT, padx=5)
+        tk.Button(btn_frame, text="关闭", relief=tk.FLAT, bg="#e0e0e0", command=dialog.destroy).pack(side=tk.LEFT, padx=5)
 
 
 def main():
