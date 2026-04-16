@@ -1,0 +1,75 @@
+name: Build macOS & Windows
+
+on:
+  push:
+    branches: [main]
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install pyinstaller netmiko paramiko pillow
+      - name: Build
+        run: |
+          pyinstaller --noconfirm --onedir --windowed `
+            --name ITToolbox `
+            --icon icon.ico `
+            --add-data "commands.json;." `
+            --hidden-import=netmiko `
+            --hidden-import=paramiko `
+            --hidden-import=PIL `
+            it_toolbox.py
+      - name: Zip
+        run: |
+          Compress-Archive -Path "dist/ITToolbox/*" -DestinationPath "ITToolbox-Windows.zip" -Force
+      - name: Upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: ITToolbox-Windows
+          path: ITToolbox-Windows.zip
+
+  build-macos:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install pyinstaller netmiko paramiko pillow
+      - name: Build
+        run: |
+          pyinstaller --noconfirm --onedir --windowed \
+            --name ITToolbox \
+            --icon icon.icns \
+            --add-data "commands.json:." \
+            --hidden-import=netmiko \
+            --hidden-import=paramiko \
+            --hidden-import=PIL \
+            --osx-bundle-identifier=com.ittoolbox.app \
+            it_toolbox.py
+      - name: Zip
+        run: |
+          cd dist
+          zip -r ../ITToolbox-macOS.zip ITToolbox.app
+      - name: Upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: ITToolbox-macOS
+          path: ITToolbox-macOS.zip
