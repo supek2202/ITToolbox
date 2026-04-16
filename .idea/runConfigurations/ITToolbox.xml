@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration name="ITToolbox" type="PythonConfigurationType" factoryName="Python">
+  <option name="SDK_NAME" value="Python 3.11 (ITToolbox)" />
+  <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+  <option name="IS_MODULE_SPECIFIC_OUTPUT" value="false" />
+  <option name="ADD_CONTENT_ROOTS" value="false" />
+  <option name="ADD_SOURCE_ROOTS" value="false" />
+  <module name="network_inspector" />
+  <option name="SCRIPT_NAME" value="$PROJECT_DIR$/it_toolbox.py" />
+  <option name="PARAMETERS" value="" />
+  <method v="2" />
+</configuration>

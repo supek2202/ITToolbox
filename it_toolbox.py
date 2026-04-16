@@ -34,7 +34,7 @@ class DeviceInspectorApp:
     def __init__(self, root):
         self.root = root
         self.root.title("IT工具箱 v1.0 - 网络设备巡检工具")
-        self.root.geometry("820x520")
+        self.root.geometry("780x550")
         self.root.resizable(False, False)
 
         # 数据文件路径 - 支持打包后路径
@@ -131,22 +131,21 @@ class DeviceInspectorApp:
         tk.Button(toolbar, text="🔄 刷新", relief=tk.FLAT, bg="#e0e0e0",
                   command=self.refresh_device_list).pack(side=tk.LEFT, padx=2)
 
-        # 主内容区 - 2x2网格布局
-        # 上排: 设备列表 | 设备详情
-        # 下排: 日志输出  | 巡检结果
+        # 主内容区（place精确控制，不混用pack）
         main_frame = tk.Frame(self.root)
-        main_frame.pack(fill=tk.BOTH, expand=True, padx=3, pady=1)
+        main_frame.place(x=0, y=28, width=780, height=480)
 
-        # 上排容器
-        top_frame = tk.Frame(main_frame)
-        top_frame.pack(fill=tk.BOTH, expand=True)
-
-        # 左上 - 设备列表
-        list_frame = tk.LabelFrame(top_frame, text="设备列表", padx=2, pady=2)
-        list_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=(0, 2), pady=(0, 1))
+        # 上排 - 设备列表（place固定尺寸，treeview留出底部滚动条）
+        list_frame = tk.LabelFrame(main_frame, text="设备列表", padx=2, pady=2)
+        list_frame.place(x=0, y=0, width=528, height=320)
 
         columns = ("序号", "类型", "厂商", "IP", "协议端口", "用户", "密码", "特权", "状态")
-        self.device_tree = ttk.Treeview(list_frame, columns=columns, show="headings", height=7)
+
+        # treeview放在带边框的Frame内
+        tree_frame = tk.Frame(list_frame, bg="#999999")
+        tree_frame.place(x=0, y=2, width=508, height=278)
+        self.device_tree = ttk.Treeview(tree_frame, columns=columns, show="headings", height=12)
+        self.device_tree.pack(fill=tk.BOTH, expand=True)
 
         self.device_tree.heading("序号", text="#")
         self.device_tree.heading("类型", text="类型")
@@ -158,78 +157,90 @@ class DeviceInspectorApp:
         self.device_tree.heading("特权", text="特权")
         self.device_tree.heading("状态", text="状态")
 
-        self.device_tree.column("序号", width=30, anchor="center")
-        self.device_tree.column("类型", width=50, anchor="center")
-        self.device_tree.column("厂商", width=50, anchor="center")
-        self.device_tree.column("IP", width=90, anchor="center")
-        self.device_tree.column("协议端口", width=60, anchor="center")
-        self.device_tree.column("用户", width=60, anchor="center")
-        self.device_tree.column("密码", width=60, anchor="center")
-        self.device_tree.column("特权", width=60, anchor="center")
-        self.device_tree.column("状态", width=50, anchor="center")
+        self.device_tree.column("序号",   width=45,  anchor="center")
+        self.device_tree.column("类型",   width=65,  anchor="center")
+        self.device_tree.column("厂商",   width=70,  anchor="center")
+        self.device_tree.column("IP",     width=120, anchor="center")
+        self.device_tree.column("协议端口", width=90, anchor="center")
+        self.device_tree.column("用户",   width=90,  anchor="center")
+        self.device_tree.column("密码",   width=90,  anchor="center")
+        self.device_tree.column("特权",   width=90,  anchor="center")
+        self.device_tree.column("状态",   width=65,  anchor="center")
+        # 总宽度=725px > 可视区，触发水平滚动
 
-        # 水平滚动条 - 需要在treeview之前创建
-        hsb = ttk.Scrollbar(list_frame, orient="horizontal")
-        hsb.pack(side=tk.BOTTOM, fill=tk.X)
-        
-        # 垂直滚动条
-        vsb = ttk.Scrollbar(list_frame, orient="vertical")
-        vsb.pack(side=tk.RIGHT, fill=tk.Y)
-        
-        # treeview配置滚动条
-        self.device_tree.configure(yscrollcommand=vsb.set, xscrollcommand=hsb.set)
-        vsb.configure(command=self.device_tree.yview)
-        hsb.configure(command=self.device_tree.xview)
-        
-        # treeview使用pack，设置足够宽度启用水平滚动
-        self.device_tree.pack(side=tk.LEFT, fill=tk.BOTH)
+        vsb = ttk.Scrollbar(list_frame, orient="vertical", command=self.device_tree.yview)
+        vsb.place(x=508, y=2, width=16, height=278)
+        self.device_tree.configure(yscrollcommand=vsb.set)
+
+        hsb = ttk.Scrollbar(list_frame, orient="horizontal", command=self.device_tree.xview)
+        hsb.place(x=0, y=280, width=508, height=16)
+        self.device_tree.configure(xscrollcommand=hsb.set)
 
         self.device_tree.bind("<Double-1>", self.on_device_double_click)
         self.device_tree.bind("<Button-3>", self.show_device_context_menu)
 
-        # 右上 - 设备详情（每个字段一行）
-        detail_frame = tk.LabelFrame(top_frame, text="设备详情", padx=2, pady=2)
-        detail_frame.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True, padx=(2, 0), pady=(0, 1))
+        # 上排右侧 - 设备详情（place固定241px宽×320px高）
+        detail_frame = tk.LabelFrame(main_frame, text="设备详情", padx=2, pady=2)
+        detail_frame.place(x=528, y=0, width=241, height=320)
 
+        # 表单（place布局，顶部，y=2起，给按钮行留44px）
         form_frame = tk.Frame(detail_frame)
-        form_frame.pack(fill=tk.X)
-        form_frame.columnconfigure(0, minsize=65)  # 标签列固定宽度，右对齐
+        form_frame.place(x=2, y=2, width=237, height=270)
+        # 外边框
+        form_border = tk.Frame(form_frame, bg="#999999")
+        form_border.place(x=0, y=0, width=237, height=270)
+        # 内容区（白色背景，压在边框内）
+        form_content = tk.Frame(form_border, bg="white")
+        form_content.place(x=1, y=1, width=235, height=268)
+        form_content.columnconfigure(0, minsize=80)
+        form_content.columnconfigure(1, weight=1)
+        form_content.grid_propagate(False)
+        # 标签对齐参数；输入框参数
+        label_opts = dict(sticky=tk.N, padx=2, pady=1)
+        input_opts = dict(padx=2, pady=1)
 
-        label_opts = dict(sticky=tk.E, padx=2, pady=1)
-        entry_opts = dict(sticky=tk.EW, padx=2, pady=1)
+        def mklabel(parent, text):
+            lbl = tk.Label(parent, text=text, width=8, anchor=tk.N)
+            return lbl
 
         # 类型
-        tk.Label(form_frame, text="类型:").grid(row=0, column=0, **label_opts)
-        self.info_device_type = ttk.Combobox(form_frame, values=self.commands_data.get("device_types", []),
+        mklabel(form_content, "类型:").grid(row=0, column=0, **label_opts)
+        self.info_device_type = ttk.Combobox(form_content, values=self.commands_data.get("device_types", []),
                                               state="readonly", width=15)
-        self.info_device_type.grid(row=0, column=1, **entry_opts)
+        self.info_device_type.grid(row=0, column=1, **input_opts)
+        self.info_device_type.configure(width=15)
 
         # 厂商
-        tk.Label(form_frame, text="厂商:").grid(row=1, column=0, **label_opts)
-        self.info_vendor = ttk.Combobox(form_frame, values=self.commands_data.get("vendors", []),
+        mklabel(form_content, "厂商:").grid(row=1, column=0, **label_opts)
+        self.info_vendor = ttk.Combobox(form_content, values=self.commands_data.get("vendors", []),
                                          state="readonly", width=15)
-        self.info_vendor.grid(row=1, column=1, **entry_opts)
+        self.info_vendor.grid(row=1, column=1, **input_opts)
+        self.info_vendor.configure(width=15)
 
         # 型号
-        tk.Label(form_frame, text="型号:").grid(row=2, column=0, **label_opts)
-        self.info_model = tk.Entry(form_frame, width=18)
-        self.info_model.grid(row=2, column=1, **entry_opts)
+        mklabel(form_content, "型号:").grid(row=2, column=0, **label_opts)
+        self.info_model = tk.Entry(form_content, width=15)
+        self.info_model.grid(row=2, column=1, **input_opts)
+        self.info_model.configure(width=15)
 
         # IP
-        tk.Label(form_frame, text="IP:").grid(row=3, column=0, **label_opts)
-        self.info_ip = tk.Entry(form_frame, width=18)
-        self.info_ip.grid(row=3, column=1, **entry_opts)
+        mklabel(form_content, "IP:").grid(row=3, column=0, **label_opts)
+        self.info_ip = tk.Entry(form_content, width=15)
+        self.info_ip.grid(row=3, column=1, **input_opts)
+        self.info_ip.configure(width=15)
 
         # 协议/端口（同行）
-        tk.Label(form_frame, text="协议/端口:").grid(row=4, column=0, **label_opts)
-        proto_frame = tk.Frame(form_frame)
-        proto_frame.grid(row=4, column=1, **entry_opts)
-        self.info_protocol = ttk.Combobox(proto_frame, values=["SSH", "Telnet"], state="readonly", width=6)
+        mklabel(form_content, "协议/端口:").grid(row=4, column=0, **label_opts)
+        proto_frame = tk.Frame(form_content)
+        proto_frame.grid(row=4, column=1, **input_opts)
+        self.info_protocol = ttk.Combobox(proto_frame, values=["SSH", "Telnet"], state="readonly", width=7)
         self.info_protocol.pack(side=tk.LEFT)
+        self.info_protocol.configure(width=7)
         tk.Label(proto_frame, text="/").pack(side=tk.LEFT, padx=2)
-        self.info_port = tk.Entry(proto_frame, width=6)
+        self.info_port = tk.Entry(proto_frame, width=5)
         self.info_port.insert(0, "22")
         self.info_port.pack(side=tk.LEFT)
+        self.info_port.configure(width=5)
 
         def on_info_protocol_change(*args):
             if self.info_protocol.get() == "Telnet":
@@ -241,46 +252,49 @@ class DeviceInspectorApp:
         self.info_protocol.bind("<<ComboboxSelected>>", on_info_protocol_change)
 
         # 用户
-        tk.Label(form_frame, text="用户:").grid(row=5, column=0, **label_opts)
-        self.info_username = tk.Entry(form_frame, width=18)
-        self.info_username.grid(row=5, column=1, **entry_opts)
+        mklabel(form_content, "用户:").grid(row=5, column=0, **label_opts)
+        self.info_username = tk.Entry(form_content, width=15)
+        self.info_username.grid(row=5, column=1, **input_opts)
+        self.info_username.configure(width=15)
 
         # 密码
-        tk.Label(form_frame, text="密码:").grid(row=6, column=0, **label_opts)
-        self.info_password = tk.Entry(form_frame, show="●", width=18)
-        self.info_password.grid(row=6, column=1, **entry_opts)
+        mklabel(form_content, "密码:").grid(row=6, column=0, **label_opts)
+        self.info_password = tk.Entry(form_content, show="●", width=15)
+        self.info_password.grid(row=6, column=1, **input_opts)
+        self.info_password.configure(width=15)
 
         # 特权密码
-        tk.Label(form_frame, text="特权:").grid(row=7, column=0, **label_opts)
-        self.info_enable = tk.Entry(form_frame, show="●", width=18)
-        self.info_enable.grid(row=7, column=1, **entry_opts)
+        mklabel(form_content, "特权:").grid(row=7, column=0, **label_opts)
+        self.info_enable = tk.Entry(form_content, show="●", width=15)
+        self.info_enable.grid(row=7, column=1, **input_opts)
+        self.info_enable.configure(width=15)
 
-        # 按钮行（单独一行）
-        btn_frame = tk.Frame(detail_frame)
-        btn_frame.pack(fill=tk.X, pady=2)
-        tk.Button(btn_frame, text="保存", relief=tk.FLAT, bg="#e0e0e0",
-                  command=self.save_device_info).pack(side=tk.LEFT, padx=2)
-        tk.Button(btn_frame, text="删除", relief=tk.FLAT, bg="#e0e0e0",
-                  command=self.delete_device).pack(side=tk.LEFT, padx=2)
-        tk.Button(btn_frame, text="测试", relief=tk.FLAT, bg="#e0e0e0",
-                  command=self.test_connection).pack(side=tk.LEFT, padx=2)
+        # 按钮行（place紧贴表单下方，水平居中）
+        btn_frame = tk.Frame(detail_frame, bg="#f5f5f5")
+        btn_frame.place(x=2, y=252, width=237, height=36)
+        tk.Button(btn_frame, text="保存", relief=tk.FLAT, bg="#e0e0e0", width=8,
+                  command=self.save_device_info).place(x=18, y=6, width=62, height=24)
+        tk.Button(btn_frame, text="删除", relief=tk.FLAT, bg="#e0e0e0", width=8,
+                  command=self.delete_device).place(x=88, y=6, width=62, height=24)
+        tk.Button(btn_frame, text="测试", relief=tk.FLAT, bg="#e0e0e0", width=8,
+                  command=self.test_connection).place(x=158, y=6, width=62, height=24)
 
-        # 下排容器
-        bottom_frame = tk.Frame(main_frame)
-        bottom_frame.pack(fill=tk.BOTH, expand=True, pady=(1, 0))
+        # 下排 - 日志输出（撑满到底部）
+        log_frame = tk.LabelFrame(main_frame, text="日志输出", padx=2, pady=2)
+        log_frame.place(x=0, y=320, width=528, height=160)
 
-        # 左下 - 日志输出（缩小）
-        log_frame = tk.LabelFrame(bottom_frame, text="日志输出", padx=2, pady=2)
-        log_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=(0, 2), pady=0)
-
-        self.log_text = scrolledtext.ScrolledText(log_frame, wrap=tk.WORD, width=50, height=7)
+        log_inner = tk.Frame(log_frame, highlightthickness=1, highlightbackground="#999999", bg="white")
+        log_inner.place(x=0, y=0, width=524, height=156)
+        self.log_text = scrolledtext.ScrolledText(log_inner, wrap=tk.WORD, width=100, height=5)
         self.log_text.pack(fill=tk.BOTH, expand=True)
 
-        # 右下 - 巡检结果（放大）
-        result_frame = tk.LabelFrame(bottom_frame, text="巡检结果", padx=2, pady=2)
-        result_frame.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True, padx=(2, 0), pady=0)
+        # 下排 - 巡检结果（撑满到底部）
+        result_frame = tk.LabelFrame(main_frame, text="巡检结果", padx=2, pady=2)
+        result_frame.place(x=528, y=320, width=241, height=160)
 
-        self.result_text = scrolledtext.ScrolledText(result_frame, wrap=tk.WORD, width=40, height=10)
+        result_inner = tk.Frame(result_frame, highlightthickness=1, highlightbackground="#999999", bg="white")
+        result_inner.place(x=0, y=0, width=237, height=156)
+        self.result_text = scrolledtext.ScrolledText(result_inner, wrap=tk.WORD, width=80, height=5)
         self.result_text.pack(fill=tk.BOTH, expand=True)
 
         # 底部版本号
@@ -368,8 +382,25 @@ class DeviceInspectorApp:
 
         # 结果列表
         ttk.Label(dialog, text="发现结果:").pack(pady=2)
-        result_listbox = tk.Listbox(dialog, height=8)
-        result_listbox.pack(fill=tk.BOTH, expand=True, padx=20, pady=2)
+        result_frame = ttk.Frame(dialog)
+        result_frame.pack(fill=tk.BOTH, expand=True, padx=20, pady=2)
+
+        columns = ("IP", "端口", "协议", "厂商", "状态")
+        result_tree = ttk.Treeview(result_frame, columns=columns, show="headings", height=8)
+        result_tree.heading("IP", text="IP地址")
+        result_tree.heading("端口", text="端口")
+        result_tree.heading("协议", text="协议")
+        result_tree.heading("厂商", text="厂商")
+        result_tree.heading("状态", text="状态")
+        result_tree.column("IP", width=140, anchor="center")
+        result_tree.column("端口", width=60, anchor="center")
+        result_tree.column("协议", width=60, anchor="center")
+        result_tree.column("厂商", width=80, anchor="center")
+        result_tree.column("状态", width=60, anchor="center")
+        vsb = ttk.Scrollbar(result_frame, orient="vertical", command=result_tree.yview)
+        result_tree.configure(yscrollcommand=vsb.set)
+        result_tree.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+        vsb.pack(side=tk.RIGHT, fill=tk.Y)
 
         # 发现结果存储
         discovery_results = []
@@ -572,7 +603,7 @@ class DeviceInspectorApp:
                             discovered.append(device_info)
 
                             # 更新UI - 只在发现新设备时更新
-                            result_listbox.insert(tk.END, f"{ip}:{main_port} - {vendor} ({protocol})")
+                            result_tree.insert("", tk.END, values=(ip, main_port, protocol, vendor, "在线"))
                             self.log(f"发现设备: {ip}:{main_port} - {vendor}")
                     except Exception as e:
                         pass
@@ -605,7 +636,7 @@ class DeviceInspectorApp:
 
         # 按钮（在结果区域之前显示）
         btn_frame = tk.Frame(dialog)
-        btn_frame.pack(before=result_listbox, pady=3)
+        btn_frame.pack(before=result_frame, pady=3)
 
         discovery_btn = tk.Button(btn_frame, text="开始扫描", relief=tk.FLAT, bg="#e0e0e0", command=start_discovery)
         discovery_btn.pack(side=tk.LEFT, padx=5)
