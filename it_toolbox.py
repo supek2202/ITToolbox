@@ -298,7 +298,7 @@ class DeviceInspectorApp:
         self.result_text.pack(fill=tk.BOTH, expand=True)
 
         # 底部版本号
-        version_label = tk.Label(self.root, text="IT工具箱 v1.0 | 网络设备巡检工具",
+        version_label = tk.Label(self.root, text="IT工具箱 v1.0.3 | 网络设备巡检工具",
                                   bg="#f0f0f0", fg="#666666", font=("Arial", 8))
         version_label.pack(side=tk.BOTTOM, fill=tk.X)
 
@@ -345,57 +345,74 @@ class DeviceInspectorApp:
         """显示设备发现对话框"""
         dialog = tk.Toplevel(self.root)
         dialog.title("设备发现")
-        dialog.geometry("580x560")
+        dialog.geometry("580x480")
         dialog.transient(self.root)
         dialog.grab_set()
 
-        # IP范围输入
-        ttk.Label(dialog, text="IP范围或网段:").pack(pady=2)
-        ip_entry = ttk.Entry(dialog, width=40)
-        ip_entry.pack(pady=2)
-        ttk.Label(dialog, text="例如: 192.168.1.1-254 或 192.168.1.0/24", font=("Arial", 9)).pack()
+        # ── IP范围（多行）──
+        row1 = ttk.Frame(dialog)
+        row1.pack(fill=tk.X, padx=20, pady=(12, 0))
+        ttk.Label(row1, text="IP范围:").pack(anchor=tk.W)
+        ip_text = tk.Text(row1, height=5, width=50, font=("Consolas", 10), relief=tk.SOLID, bd=1)
+        ip_text.pack(pady=(4, 2))
+        ip_text.insert("1.0", "192.168.1.1-254\n192.168.1.0/24\n10.0.0.1")
+        ttk.Label(row1, text="每行一个IP/范围/CIDR，如 192.168.1.1-254  192.168.1.0/24  10.0.0.1",
+                 font=("Arial", 9), foreground="gray").pack(anchor=tk.W)
 
-        # 端口选择
-        ttk.Label(dialog, text="扫描端口:").pack(pady=2)
-        ports_frame = ttk.Frame(dialog)
-        ports_frame.pack(pady=2)
-
+        # ── 扫描端口 ──
+        row2 = ttk.Frame(dialog)
+        row2.pack(fill=tk.X, padx=20, pady=4)
+        ttk.Label(row2, text="端口:").pack(side=tk.LEFT)
         port_vars = {}
         for port, name in [(22, "SSH"), (23, "Telnet"), (443, "HTTPS")]:
             var = tk.BooleanVar(value=True)
             port_vars[port] = var
-            ttk.Checkbutton(ports_frame, text=f"{port} ({name})", variable=var).pack(side=tk.LEFT, padx=5)
+            ttk.Checkbutton(row2, text=f"{port}({name})", variable=var).pack(side=tk.LEFT, padx=(4, 10))
+        ttk.Label(row2, text="自定义:").pack(side=tk.LEFT, padx=(16, 4))
+        custom_port_entry = ttk.Entry(row2, width=14)
+        custom_port_entry.pack(side=tk.LEFT)
+        ttk.Label(row2, text="支持 22,80,1-1000", font=("Arial", 9), foreground="gray").pack(side=tk.LEFT, padx=4)
 
-        # 厂商识别
-        ttk.Label(dialog, text="选项:").pack(pady=2)
+        # ── 选项 ──
+        row3 = ttk.Frame(dialog)
+        row3.pack(fill=tk.X, padx=20, pady=4)
         identify_vendor = tk.BooleanVar(value=True)
-        ttk.Checkbutton(dialog, text="自动识别厂商", variable=identify_vendor).pack()
-
-        # 并发数
-        ttk.Label(dialog, text="并发数:").pack(pady=2)
+        ttk.Checkbutton(row3, text="自动识别厂商", variable=identify_vendor).pack(side=tk.LEFT)
+        ttk.Label(row3, text="并发数:").pack(side=tk.LEFT, padx=(20, 4))
         threads_var = tk.IntVar(value=50)
-        ttk.Spinbox(dialog, from_=10, to=200, textvariable=threads_var, width=10).pack()
+        ttk.Spinbox(row3, from_=10, to=200, textvariable=threads_var, width=6).pack(side=tk.LEFT)
 
-        # 进度条
-        progress = ttk.Progressbar(dialog, mode="indeterminate")
-        progress.pack(fill=tk.X, padx=20, pady=3)
+        # ── 按钮行（在结果区上方，居中）──
+        btn_row = tk.Frame(dialog)
+        btn_row.pack(pady=(8, 2))
+        discovery_btn = tk.Button(btn_row, text="开始扫描", relief=tk.FLAT, bg="#e0e0e0", width=8)
+        discovery_btn.pack(side=tk.LEFT, padx=5)
+        add_btn = tk.Button(btn_row, text="添加到设备库", relief=tk.FLAT, bg="#e0e0e0", width=11, state=tk.DISABLED)
+        add_btn.pack(side=tk.LEFT, padx=5)
+        tk.Button(btn_row, text="关闭", relief=tk.FLAT, bg="#e0e0e0", width=6, command=dialog.destroy).pack(side=tk.LEFT, padx=5)
 
-        # 结果列表
-        ttk.Label(dialog, text="发现结果:").pack(pady=2)
+        # ── 结果区标题行 ──
+        result_top = ttk.Frame(dialog)
+        result_top.pack(fill=tk.X, padx=20, pady=(4, 0))
+        ttk.Label(result_top, text="发现结果:").pack(side=tk.LEFT)
+        progress = ttk.Progressbar(result_top, mode="indeterminate", length=150)
+        progress.pack(side=tk.LEFT, padx=8)
+        stats_label = ttk.Label(result_top, text="扫描总数: 0  |  发现: 0", font=("Arial", 9))
+        stats_label.pack(side=tk.LEFT)
+        # ── 结果列表 ──
         result_frame = ttk.Frame(dialog)
-        result_frame.pack(fill=tk.BOTH, expand=True, padx=20, pady=2)
-
+        result_frame.pack(fill=tk.BOTH, expand=True, padx=20, pady=6)
         columns = ("IP", "端口", "协议", "厂商", "状态")
         result_tree = ttk.Treeview(result_frame, columns=columns, show="headings", height=8)
-        result_tree.heading("IP", text="IP地址")
+        result_tree.heading("IP", text="IP")
         result_tree.heading("端口", text="端口")
         result_tree.heading("协议", text="协议")
         result_tree.heading("厂商", text="厂商")
         result_tree.heading("状态", text="状态")
-        result_tree.column("IP", width=140, anchor="center")
+        result_tree.column("IP", width=145, anchor="center")
         result_tree.column("端口", width=60, anchor="center")
-        result_tree.column("协议", width=60, anchor="center")
-        result_tree.column("厂商", width=80, anchor="center")
+        result_tree.column("协议", width=65, anchor="center")
+        result_tree.column("厂商", width=90, anchor="center")
         result_tree.column("状态", width=60, anchor="center")
         vsb = ttk.Scrollbar(result_frame, orient="vertical", command=result_tree.yview)
         result_tree.configure(yscrollcommand=vsb.set)
@@ -405,56 +422,55 @@ class DeviceInspectorApp:
         # 发现结果存储
         discovery_results = []
 
-        def parse_ip_range(ip_str):
-            """解析IP范围"""
+        def _parse_ip_line(line):
+            """解析单行IP/范围/CIDR，返回IP列表"""
             ips = []
-            ip_str = ip_str.strip()
-
-            # 处理CIDR格式 192.168.1.0/24
-            if '/' in ip_str:
+            line = line.strip()
+            if not line or line.startswith('#'):
+                return ips
+            # CIDR
+            if '/' in line:
                 try:
-                    ip, mask = ip_str.split('/')
+                    ip, mask = line.split('/')
                     ip_parts = list(map(int, ip.split('.')))
                     mask = int(mask)
-
                     if mask == 24:
-                        network = (ip_parts[0] << 24) + (ip_parts[1] << 16) + (ip_parts[2] << 8)
+                        base = f"{ip_parts[0]}.{ip_parts[1]}.{ip_parts[2]}"
                         for i in range(1, 255):
-                            ips.append(f"{ip_parts[0]}.{ip_parts[1]}.{ip_parts[2]}.{i}")
+                            ips.append(f"{base}.{i}")
                     elif mask == 16:
-                        network = (ip_parts[0] << 24) + (ip_parts[1] << 16)
                         for i in range(1, 255):
                             for j in range(1, 255):
                                 ips.append(f"{ip_parts[0]}.{ip_parts[1]}.{i}.{j}")
                 except:
                     pass
-            # 处理范围格式 192.168.1.1-254
-            elif '-' in ip_str:
+            # 范围
+            elif '-' in line:
                 try:
-                    start_ip, end_ip = ip_str.split('-')
-                    start_ip = start_ip.strip()
-                    end_ip = end_ip.strip()
-
-                    if '.' in end_ip:
-                        # 完整IP范围 192.168.1.1-192.168.1.254
-                        start_parts = list(map(int, start_ip.split('.')))
-                        end_parts = list(map(int, end_ip.split('.')))
-
-                        start_num = (start_parts[0] << 24) + (start_parts[1] << 16) + (start_parts[2] << 8) + start_parts[3]
-                        end_num = (end_parts[0] << 24) + (end_parts[1] << 16) + (end_parts[2] << 8) + end_parts[3]
-
-                        for num in range(start_num, end_num + 1):
-                            ips.append(f"{(num >> 24) & 0xFF}.{(num >> 16) & 0xFF}.{(num >> 8) & 0xFF}.{num & 0xFF}")
+                    a, b = line.split('-')
+                    a, b = a.strip(), b.strip()
+                    if '.' in b:
+                        pa = list(map(int, a.split('.')))
+                        pb = list(map(int, b.split('.')))
+                        na = (pa[0]<<24)+(pa[1]<<16)+(pa[2]<<8)+pa[3]
+                        nb = (pb[0]<<24)+(pb[1]<<16)+(pb[2]<<8)+pb[3]
+                        for n in range(na, nb+1):
+                            ips.append(f"{(n>>24)&255}.{(n>>16)&255}.{(n>>8)&255}.{n&255}")
                     else:
-                        # 短格式 192.168.1.1-254
-                        prefix = '.'.join(start_ip.split('.')[:-1])
-                        for i in range(int(start_ip.split('.')[-1]), int(end_ip) + 1):
+                        prefix = '.'.join(a.split('.')[:-1])
+                        for i in range(int(a.split('.')[-1]), int(b)+1):
                             ips.append(f"{prefix}.{i}")
                 except:
                     pass
             else:
-                ips.append(ip_str)
+                ips.append(line)
+            return ips
 
+        def parse_ip_range(ip_str):
+            """解析多行IP文本，每行一个IP/范围/CIDR"""
+            ips = []
+            for line in ip_str.strip().split('\n'):
+                ips.extend(_parse_ip_line(line))
             return ips
 
         def scan_port(ip, port, timeout=2):
@@ -530,15 +546,33 @@ class DeviceInspectorApp:
             """开始发现"""
             nonlocal discovery_results
 
-            ip_range = ip_entry.get().strip()
+            ip_range = ip_text.get("1.0", tk.END).strip()
             if not ip_range:
                 messagebox.showwarning("警告", "请输入IP范围")
                 return
 
             # 获取要扫描的端口
             ports = [port for port, var in port_vars.items() if var.get()]
+            # 追加自定义端口
+            custom = custom_port_entry.get().strip()
+            if custom:
+                for p in custom.split(','):
+                    p = p.strip()
+                    if not p:
+                        continue
+                    if '-' in p:
+                        try:
+                            a, b = p.split('-', 1)
+                            for port in range(int(a), int(b)+1):
+                                if 1 <= port <= 65535:
+                                    ports.append(port)
+                        except:
+                            pass
+                    elif p.isdigit() and 1 <= int(p) <= 65535:
+                        ports.append(int(p))
+            ports = sorted(set(ports))
             if not ports:
-                messagebox.showwarning("警告", "请选择至少一个端口")
+                messagebox.showwarning("警告", "请选择至少一个端口或输入自定义端口")
                 return
 
             progress.start()
@@ -561,6 +595,8 @@ class DeviceInspectorApp:
                 for future in as_completed(future_to_ip):
                     ip = future_to_ip[future]
                     completed += 1
+                    if completed % 5 == 0:
+                        dialog.after(0, lambda c=completed, d=len(discovered): stats_label.config(text=f"扫描总数: {total}  |  发现设备: {d}"))
 
                     try:
                         open_ports = future.result()
@@ -634,17 +670,8 @@ class DeviceInspectorApp:
             messagebox.showinfo("成功", f"已添加 {len(discovery_results)} 台设备")
             dialog.destroy()
 
-        # 按钮（在结果区域之前显示）
-        btn_frame = tk.Frame(dialog)
-        btn_frame.pack(before=result_frame, pady=3)
-
-        discovery_btn = tk.Button(btn_frame, text="开始扫描", relief=tk.FLAT, bg="#e0e0e0", command=start_discovery)
-        discovery_btn.pack(side=tk.LEFT, padx=5)
-
-        add_btn = tk.Button(btn_frame, text="添加到设备库", relief=tk.FLAT, bg="#e0e0e0", command=add_discovered_devices, state=tk.DISABLED)
-        add_btn.pack(side=tk.LEFT, padx=5)
-
-        tk.Button(btn_frame, text="关闭", relief=tk.FLAT, bg="#e0e0e0", command=dialog.destroy).pack(side=tk.LEFT, padx=5)
+        discovery_btn.config(command=start_discovery)
+        add_btn.config(command=add_discovered_devices)
 
     def show_add_device_dialog(self):
         """显示添加设备对话框"""
@@ -1465,7 +1492,7 @@ class DeviceInspectorApp:
         title_label.pack(pady=3)
 
         # 版本
-        version_label = tk.Label(main_frame, text="版本: 1.0.0", font=("Helvetica", 12))
+        version_label = tk.Label(main_frame, text="版本: 1.0.3", font=("Helvetica", 12))
         version_label.pack(pady=2)
 
         # 描述

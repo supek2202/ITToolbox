@@ -24,7 +24,7 @@ RELEASE_DIR = PROJECT_DIR / "release"
 # 应用信息
 APP_NAME = "IT工具箱"
 APP_NAME_EN = "ITToolbox"
-VERSION = "1.0.0"
+VERSION = "1.0.3"
 
 def clean():
     """清理构建目录"""
